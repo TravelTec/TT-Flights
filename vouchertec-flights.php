@@ -25,6 +25,7 @@ License: GPLv2
 
 
 */ 
+require 'plugin-update-checker-4.10/plugin-update-checker.php';
 require 'helpers/mail/Custom_Mailer.php';
 
 
