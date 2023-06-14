@@ -1305,13 +1305,9 @@ function search_results(){
 
 	if(type_flight == 3){
 
-		if(jQuery("#classeTripMulti").val() == ""){
-			swal({ 
-	            title: "É necessário selecionar a classe.", 
-	            icon: "warning", 
-	        });  
-	        return false;
-		}
+		var classTrip = "NO";
+		localStorage.setItem("CLASSE_TRIP", 'Econômica'); 
+		localStorage.setItem("ID_CLASSE_TRIP", 1);
 
 		var routes = "";
 		for(var i = 1; i < 6; i++){
@@ -1342,6 +1338,10 @@ function search_results(){
 			var classTrip = "ALSO";
     		localStorage.setItem("CLASSE_TRIP", 'Executiva/Business'); 
     		localStorage.setItem("ID_CLASSE_TRIP", 3);
+		}else if(jQuery("#classeTripMulti").val() == 4){
+			var classTrip = "ALSO";
+    		localStorage.setItem("CLASSE_TRIP", 'Primeira Classe'); 
+    		localStorage.setItem("ID_CLASSE_TRIP", 4);
 		}else{
 			var classTrip = "ALSO";
     		localStorage.setItem("CLASSE_TRIP", 'Primeira Classe'); 
@@ -1350,13 +1350,9 @@ function search_results(){
 
 	}else if(type_flight == 2){
 
-		if(jQuery("#classeTrip").val() == ""){
-			swal({ 
-	            title: "É necessário selecionar a classe.", 
-	            icon: "warning", 
-	        });  
-	        return false;
-		}
+		var classTrip = "NO";
+		localStorage.setItem("CLASSE_TRIP", 'Econômica'); 
+		localStorage.setItem("ID_CLASSE_TRIP", 1);
 
 		var origem = localStorage.getItem("ORIGEM_FLIGHT");
 		var aero_origem = localStorage.getItem("ID_ORIGEM_FLIGHT");
@@ -1381,21 +1377,21 @@ function search_results(){
 			var classTrip = "ALSO";
     		localStorage.setItem("CLASSE_TRIP", 'Executiva/Business'); 
     		localStorage.setItem("ID_CLASSE_TRIP", 3);
-		}else{
+		}else if(jQuery("#classeTrip").val() == 4){
 			var classTrip = "ALSO";
     		localStorage.setItem("CLASSE_TRIP", 'Primeira Classe'); 
     		localStorage.setItem("ID_CLASSE_TRIP", 4);
+		}else{
+			var classTrip = "NO";
+    		localStorage.setItem("CLASSE_TRIP", 'Econômica'); 
+    		localStorage.setItem("ID_CLASSE_TRIP", 1);
 		}
 
 	}else{
 
-		if(jQuery("#classeTrip").val() == ""){
-			swal({ 
-	            title: "É necessário selecionar a classe.", 
-	            icon: "warning", 
-	        });  
-	        return false;
-		}
+		var classTrip = "NO";
+		localStorage.setItem("CLASSE_TRIP", 'Econômica'); 
+		localStorage.setItem("ID_CLASSE_TRIP", 1);
 
 		var origem = localStorage.getItem("ORIGEM_FLIGHT");
 		var aero_origem = localStorage.getItem("ID_ORIGEM_FLIGHT");
@@ -1420,10 +1416,14 @@ function search_results(){
 			var classTrip = "ALSO";
     		localStorage.setItem("CLASSE_TRIP", 'Executiva/Business'); 
     		localStorage.setItem("ID_CLASSE_TRIP", 3);
-		}else{
+		}else if(jQuery("#classeTrip").val() == 4){
 			var classTrip = "ALSO";
     		localStorage.setItem("CLASSE_TRIP", 'Primeira Classe'); 
     		localStorage.setItem("ID_CLASSE_TRIP", 4);
+		}else{
+			var classTrip = "NO";
+    		localStorage.setItem("CLASSE_TRIP", 'Econômica'); 
+    		localStorage.setItem("ID_CLASSE_TRIP", 1);
 		}
 
 	}
