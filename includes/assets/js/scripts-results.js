@@ -3,7 +3,16 @@ jQuery(document).ready(function(){
 
 	var url_atual = window.location.href;
 
-	if(url_atual.indexOf("/offers-flights/") != -1){
+	if(url_atual.indexOf("/offers-flights/") != -1){ 
+		jQuery(".qtyTotalFlights").html(parseInt(localStorage.getItem("ADULTOS_FLIGHT"))+parseInt(localStorage.getItem("CRIANCAS_FLIGHT")));
+		jQuery(".classTrip").html(localStorage.getItem("CLASSE_TRIP")); 
+		jQuery("#panel1adt").val(parseInt(localStorage.getItem("ADULTOS_FLIGHT")));
+		jQuery(".qtyAdtFlights input").val(parseInt(localStorage.getItem("ADULTOS_FLIGHT")));
+		
+		jQuery("#panel1chd").val(parseInt(localStorage.getItem("CRIANCAS_FLIGHT")));
+		jQuery(".qtyChd input").val(parseInt(localStorage.getItem("CRIANCAS_FLIGHT")));
+		jQuery(".qtyTotalMultiFlights").html(parseInt(localStorage.getItem("ADULTOS_FLIGHT"))+parseInt(localStorage.getItem("CRIANCAS_FLIGHT")));
+		jQuery(".classeTripMulti").html(localStorage.getItem("CLASSE_TRIP")); 
 
 		list_data_search(); 
 
@@ -104,23 +113,13 @@ function list_data_search(){
 		return xx.format(price);
 	}
 
-	function getTimeFromMins(mins) {
-	    // do not include the first validation check if you want, for example,
-	    // getTimeFromMins(1530) to equal getTimeFromMins(90) (i.e. mins rollover)
-	    if (mins >= 24 * 60 || mins < 0) {
-	        throw new RangeError("Valid input should be greater than or equal to 0 and less than 1440.");
-	    }
+	function getTimeFromMins(mins) { 
 	    var hours = Math.floor(mins / 60);          
     	var minutes = mins % 60; 
 	    return moment.utc().hours(hours).minutes(minutes).format("HH:mm");
 	}
 
-	function getTimeFromMinsFormatBoot(mins) {
-	    // do not include the first validation check if you want, for example,
-	    // getTimeFromMins(1530) to equal getTimeFromMins(90) (i.e. mins rollover)
-	    if (mins >= 24 * 60 || mins < 0) {
-	        throw new RangeError("Valid input should be greater than or equal to 0 and less than 1440.");
-	    }
+	function getTimeFromMinsFormatBoot(mins) { 
 	    var hours = Math.floor(mins / 60);          
     	var minutes = mins % 60; 
 	    return moment.utc().hours(hours).minutes(minutes).format("HH[h] mm[m]");
@@ -559,7 +558,7 @@ function storage_json_data(){
 	  	try { 
  
 	    	await start_filters_flights();
-	    	await list_results_flights(15, 0);
+	    	await list_results_flights(10, 0);
 
 	  	} catch (err) {  
 	    	console.error(err); 
@@ -897,40 +896,88 @@ function change_filter_luggage(luggage){
 }
 /* FIM FUNCTIONS HELPERS FILTERS */
 
-function filter_flights(){ 
+function filter_flights(type = null){ 
 
 	var data = JSON.parse(localStorage.getItem("RESULT_FLIGHTS")); 
     var logos = JSON.parse(localStorage.getItem("COMPANIES_LOGO")); 
 
 	var dataJson = [];
+	
+	if(type == 1){
+		jQuery("#min_price_flights").val(data.meta.price.minWithoutTax);
+		jQuery("#max_price_flights").val(data.meta.price.maxWithoutTax);
+		
+		var filter_min_price = jQuery("#min_price_flights").val();
+		var filter_max_price = jQuery("#max_price_flights").val(); 
 
-	var filter_min_price = jQuery("#min_price_flights").val();
-	var filter_max_price = jQuery("#max_price_flights").val(); 
-
-	var filter_stops = []; 
-	if(jQuery("#qtd_paradas_selected").val() == "all"){
+		var filter_stops = [];  
 		filter_stops.push("Direto");
 		filter_stops.push("1 parada");
 		filter_stops.push("2 paradas");
 
-		filter_stops = JSON.stringify(filter_stops);
-	} else{
-		filter_stops = jQuery("#qtd_paradas_selected").val();
-	}
-	var desc_filter_stops = JSON.parse(filter_stops);  
+		filter_stops = JSON.stringify(filter_stops); 
+		var desc_filter_stops = JSON.parse(filter_stops); 
 
-	var filter_luggage = []; 
-	if(jQuery("#qtd_luggage_selected").val() == "all"){
+		for(var i = 0; i < 5; i++){ 
+			jQuery("#inlineCheckbox"+i).removeAttr("checked"); 
+		}  
+
+		jQuery("#inlineCheckbox6").attr("disabled", "disabled"); 
+		jQuery("#inlineCheckbox6").prop("disabled", true);    
+
+		jQuery("#inlineCheckbox6").attr("checked", "checked"); 
+		jQuery("#inlineCheckbox6").prop("checked", true);  
+
+		jQuery("#qtd_paradas_selected").val(JSON.stringify(filter_stops));
+
+		var filter_luggage = []; 
 		filter_luggage.push(parseInt(0));
 		filter_luggage.push(parseInt(1)); 
 
 		filter_luggage = JSON.stringify(filter_luggage);
-	} else{
-		filter_luggage = jQuery("#qtd_luggage_selected").val();
+		var desc_filter_luggage = JSON.parse(filter_luggage);  
+
+		for(var i = 0; i < 5; i++){ 
+			jQuery("#inlineCheckbox"+i+"B").removeAttr("checked"); 
+		}  
+
+		jQuery("#inlineCheckbox6B").attr("disabled", "disabled"); 
+		jQuery("#inlineCheckbox6B").prop("disabled", true);  
+
+		jQuery("#inlineCheckbox6B").attr("checked", "checked"); 
+		jQuery("#inlineCheckbox6B").prop("checked", true);  
+
+		jQuery("#qtd_luggage_selected").val(JSON.stringify(filter_luggage));
+	
+	}else{
+
+		var filter_min_price = jQuery("#min_price_flights").val();
+		var filter_max_price = jQuery("#max_price_flights").val(); 
+
+		var filter_stops = []; 
+		if(jQuery("#qtd_paradas_selected").val() == "all"){
+			filter_stops.push("Direto");
+			filter_stops.push("1 parada");
+			filter_stops.push("2 paradas");
+
+			filter_stops = JSON.stringify(filter_stops);
+		} else{
+			filter_stops = jQuery("#qtd_paradas_selected").val();
+		}
+		var desc_filter_stops = JSON.parse(filter_stops);  
+
+		var filter_luggage = []; 
+		if(jQuery("#qtd_luggage_selected").val() == "all"){
+			filter_luggage.push(parseInt(0));
+			filter_luggage.push(parseInt(1)); 
+
+			filter_luggage = JSON.stringify(filter_luggage);
+		} else{
+			filter_luggage = jQuery("#qtd_luggage_selected").val();
+		}
+		var desc_filter_luggage = JSON.parse(filter_luggage);  
+	
 	}
-	var desc_filter_luggage = JSON.parse(filter_luggage); 
-	console.log(desc_filter_stops);
-	console.log(desc_filter_luggage);
 
 	jQuery(data.flights).each(function(i, item) { 
 
@@ -1359,14 +1406,14 @@ function filter_flights(){
 				retorno += '<div class="col-lg-12 col-12" style="padding: 20px;">'; 
 					retorno += '<h4>'; 
 					retorno += '<i class="fa fa-exclamation"></i> Não encontramos resultados para os filtros selecionados.</h4>'; 
-					retorno += '<a onclick="filter_flights()" style="color:#000081;cursor:pointer"><strong style="color:#000081;cursor:pointer">Remover os filtros para ver todos os resultados.</strong></a>'; 
+					retorno += '<a onclick="filter_flights(1)" style="color:#000081;cursor:pointer"><strong style="color:#000081;cursor:pointer">Remover os filtros para ver todos os resultados.</strong></a>'; 
 				retorno += '</div>'; 
 			retorno += '</div>'; 
 		retorno += '</div>';
 
 		jQuery(".resultsFlights").html(retorno); 
 	}else{ 
-		list_results_flights(15, 0);
+		list_results_flights(10, 0);
 	}
 
 }
@@ -1383,7 +1430,7 @@ function list_results_flights(contador_prox, contador_prev){
     	contador++;
     	if(i < contador_prox && i >= contador_prev){
 
-	    	html += '<div class="elementor-container elementor-column-gap-default" style="margin-bottom: 20px;">';
+	    	html += '<div class="elementor-container elementor-column-gap-default" style="margin-bottom: 20px;display: flex;">';
 			    html += '<div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-3c1f62c" data-id="3c1f62c" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>';
 			        html += '<div class="elementor-widget-wrap elementor-element-populated">';
 
@@ -2378,7 +2425,7 @@ function list_results_flights(contador_prox, contador_prev){
 				html += '<div class="">'; 
 					html += "<input type='hidden' id='pageActiveFlights' value='1'>"; 
 
-					var total_pages = contador/15; 
+					var total_pages = contador/10; 
 					for(var i = 1; i <= total_pages; i++){ 
 						if(i == jQuery("#pageActiveFlights").val()){ 
 							html += '<span style="padding: 10px;font-size: 17px;font-weight: 800;color: #000000;cursor:pointer" onclick="show_page_flights('+i+')">'+i+'</span>'; 
@@ -2401,9 +2448,9 @@ function show_page_flights(page){
 
 	jQuery("#pageActiveFlights").val(page);
 
-	var contador_prox = page*15;
+	var contador_prox = page*10;
 
-	var contador_prev = contador_prox-15;
+	var contador_prev = contador_prox-10;
 
 	list_results_flights(contador_prox, contador_prev);
 

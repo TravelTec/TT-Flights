@@ -25,6 +25,7 @@ License: GPLv2
 
 
 */ 
+//ini_set("display_errors", 1);
 require 'plugin-update-checker-4.10/plugin-update-checker.php';
 require 'helpers/mail/Custom_Mailer.php';
 
@@ -175,6 +176,9 @@ function shortcode_motor_reserva_flights(){
 		.wrn-btn{width:100%;font-size:16px;font-weight:400;text-transform:capitalize;height:calc(3rem + 9px)!important;border-radius:0 4px 4px 0;}
 		.wrn-btn:focus{outline:none;box-shadow:none;border:none;}
 		@media (min-width:992px){
+			.daterangepicker .drp-calendar{
+				    max-width: 280px !important;
+			}
 			.idtrecho{
 				padding: 10px 9px;font-size: 17px;font-weight: 800;text-align: center;background-color: '.(empty(get_option( 'cor_flights' )) ? '#000000' : get_option( 'cor_flights' )).';color:#fff;border-radius: 100%;width: 40px;height: 40px;margin: 5px 26px;
 			}
@@ -226,7 +230,7 @@ function shortcode_motor_reserva_flights(){
 			.ripple{
 				    margin-top: 15px;
 			}
-			.panel-dropdown .panel-dropdown-content{
+			.panel-dropdown-flights .panel-dropdown-content{
 				width: 245px !important;
 			}
 			.qtyButtons label{
@@ -284,17 +288,17 @@ function shortcode_motor_reserva_flights(){
 		.custom-search-input-2.inner-2 input[type=\'submit\']{-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;border-radius:3px;margin-top:10px}
 		.custom-search-input-2.inner-2 i{padding-right:10px;line-height:48px;height:48px;top:1px}
 		.custom-search-input-2.inner-2 .nice-select{border:1px solid #ededed}
-		.panel-dropdown{position:relative;text-align:left;padding:21px 6px 0 0px}
-		@media (max-width: 991px){.panel-dropdown{background-color:#fff;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;border-radius:3px;height:50px}
+		.panel-dropdown-flights{position:relative;text-align:left;padding:21px 6px 0 0px}
+		@media (max-width: 991px){.panel-dropdown-flights{background-color:#fff;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;border-radius:3px;height:50px}
 		}
-		.panel-dropdown a{color:#727b82;font-weight:500;transition:all 0.3s;display:flex;align-items:center;justify-content:flex-start;position:relative;top:1px;font-size: 13px;}
-		.panel-dropdown a:after{content:"\25BE";font-size:1.7rem;color:#999;font-weight:500;-moz-transition:all 0.3s ease-in-out;-o-transition:all 0.3s ease-in-out;-webkit-transition:all 0.3s ease-in-out;-ms-transition:all 0.3s ease-in-out;transition:all 0.3s ease-in-out;position:absolute;right:0;top:-11px;}
-		.panel-dropdown.active a:after{transform:rotate(180deg);}
-		.panel-dropdown .panel-dropdown-content{opacity:0;visibility:hidden;transition:all 0.3s;position:absolute;top:58px;left:0px;z-index:99;background:#fff;border-radius:4px;white-space:normal;width:310px;box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;border:none;}
-		.panel-dropdown .panel-dropdown-content:after{bottom:100%;left:15px;border:solid transparent;content:" ";height:0;width:0;position:absolute;pointer-events:none;border-bottom-color:#fff;border-width:7px;margin-left:-7px}
-		.panel-dropdown .panel-dropdown-content.right{left:auto;right:0}
-		.panel-dropdown .panel-dropdown-content.right:after{left:auto;right:15px}
-		.panel-dropdown.active .panel-dropdown-content{opacity:1;visibility:visible}
+		.panel-dropdown-flights a{color:#727b82;font-weight:500;transition:all 0.3s;display:flex;align-items:center;justify-content:flex-start;position:relative;top:1px;font-size: 13px;}
+		.panel-dropdown-flights a:after{content:"\25BE";font-size:1.7rem;color:#999;font-weight:500;-moz-transition:all 0.3s ease-in-out;-o-transition:all 0.3s ease-in-out;-webkit-transition:all 0.3s ease-in-out;-ms-transition:all 0.3s ease-in-out;transition:all 0.3s ease-in-out;position:absolute;right:0;top:-11px;}
+		.panel-dropdown-flights.active a:after{transform:rotate(180deg);}
+		.panel-dropdown-flights .panel-dropdown-content{opacity:0;visibility:hidden;transition:all 0.3s;position:absolute;top:58px;left:0px;z-index:99;background:#fff;border-radius:4px;white-space:normal;width:310px;box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;border:none;}
+		.panel-dropdown-flights .panel-dropdown-content:after{bottom:100%;left:15px;border:solid transparent;content:" ";height:0;width:0;position:absolute;pointer-events:none;border-bottom-color:#fff;border-width:7px;margin-left:-7px}
+		.panel-dropdown-flights .panel-dropdown-content.right{left:auto;right:0}
+		.panel-dropdown-flights .panel-dropdown-content.right:after{left:auto;right:15px}
+		.panel-dropdown-flights.active .panel-dropdown-content{opacity:1;visibility:visible}
 		.qtyButtons{display:flex;margin:0 0 13px 0}
 		.qtyButtons input{outline:0;font-size:16px;font-size:1rem;text-align:center;width:50px;height:36px !important;color:#333;line-height:36px;margin:0 !important;padding:0 5px !important;border:none;box-shadow:none;pointer-events:none;display:inline-block;border:none !important}
 		.qtyButtons label{font-weight:400;line-height:36px;padding-right:15px;display:block;flex:1;color:#626262;    font-size: 18px;}
@@ -303,7 +307,7 @@ function shortcode_motor_reserva_flights(){
 		.qtyInc:hover:before, .qtyDec:hover:before, .qtyIncMulti:hover:before, .qtyDecMulti:hover:before{color:#fff}
 		.qtyInc:before, .qtyIncMulti:before{content:"\002B";font-size:19px;font-weight:900;line-height: 29px;}
 		.qtyDec:before, .qtyDecMulti:before{content:"\2212";font-size:19px;font-weight:900;line-height: 29px;}
-		.qtyTotal, .qtyRoom, .qtyTotalMulti{border-radius:50%;color:#66676b;display:inline-block;font-size:14px;font-weight:600;font-family:\'Montserrat\', sans-serif;line-height:18px;text-align:center;position:relative;    top: 0px;
+		.qtyTotalFlights, .qtyRoom, .qtyTotalMultiFlights{border-radius:50%;color:#66676b;display:inline-block;font-size:14px;font-weight:600;font-family:\'Montserrat\', sans-serif;line-height:18px;text-align:center;position:relative;    top: 0px;
     left: 0px;
     height: 18px;
     width: 18px;
@@ -502,7 +506,7 @@ function shortcode_motor_reserva_flights(){
 										<ul style="padding:0;margin: 0;"></ul>
 									</div>
 								</div> 
-								<i class="fa fa-map-marker"></i>
+								<i class="fas fa-map-marker-alt"></i>
 							</div>
 						</div>
 						<div class="col-lg-4 fieldDates">
@@ -518,18 +522,18 @@ function shortcode_motor_reserva_flights(){
 						</div>
 						<div class="col-lg-3 fieldPax">
 							<label class="label" style="">PASSAGEIROS E CLASSE</label>
-							<div class="panel-dropdown" id="panelDropdown">
-								<a href="#"><i class="fa fa-user" style="position: unset;padding: 0;line-height: 1;height: auto;margin-left: 8px;BORDER: NONE;"></i> <span class="qtyTotal">2</span> pessoas, <span class="classeTrip">Econômica</span></a>
+							<div class="panel-dropdown-flights panelDropdownFlights" id="panelDropdownFlights">
+								<a href="#"><i class="fa fa-user" style="position: unset;padding: 0;line-height: 1;height: auto;margin-left: 8px;BORDER: NONE;"></i> <span class="qtyTotalFlights">2</span> pessoas, <span class="classeTrip">Econômica</span></a>
 								<div class="panel-dropdown-content">
 									<input type="hidden" id="qtd_room_add" value="1">
 									<div class="rooms_add">
-										<div id="panelTrip" class="panelTrip" style="padding:15px 15px 0 15px;">
+										<div id="panelTripFlights" class="panelTripFlights" style="padding:15px 15px 0 15px;">
 											<input type="hidden" id="panel1qts" value="1">  
-											<div class="qtyButtons qtyAdt">
+											<div class="qtyButtons qtyAdtFlights">
 												<input type="hidden" id="panel1adt" value="2">
 												<label>Adultos</label> 
 												<div class="qtyDec"></div>
-												<input type="text" name="qtyInput" value="2">
+												<input type="text" name="qtyInputFlights" value="2">
 												<div class="qtyInc"></div>
 											</div>
 											<div class="qtyButtons qtyChd">
@@ -539,7 +543,7 @@ function shortcode_motor_reserva_flights(){
 													<small style="font-weight: 500;font-size: 12px;">Até 11 anos</small>
 												</label> 
 												<div class="qtyDec"></div>
-												<input type="text" name="qtyInput" value="0" max="4">
+												<input type="text" name="qtyInputFlights" value="0" max="4">
 												<div class="qtyInc"></div>
 											</div> 
 											<div class="idade_chd1" style="display:none">
@@ -685,7 +689,7 @@ function shortcode_motor_reserva_flights(){
 											<ul style="padding:0;margin: 0;"></ul>
 										</div>
 									</div> 
-									<i class="fa fa-map-marker"></i>
+									<i class="fas fa-map-marker-alt"></i>
 								</div>
 							</div>
 							<div class="col-lg-2 fieldDates">
@@ -696,17 +700,17 @@ function shortcode_motor_reserva_flights(){
 							</div>
 							<div class="col-lg-3 fieldPax">
 								<label class="label" style="">PASSAGEIROS E CLASSE</label>
-								<div class="panel-dropdown panel-multi" id="panelDropdownMulti">
-									<a href="#"><i class="fa fa-user" style="position: unset;padding: 0;line-height: 1;height: auto;margin-left: 8px;BORDER: NONE;"></i> <span class="qtyTotalMulti">2</span> pessoas, <span class="classeTripMulti">Econômica</span></a>
+								<div class="panel-dropdown-flights panel-multi" id="panelDropdownMultiFlights">
+									<a href="#"><i class="fa fa-user" style="position: unset;padding: 0;line-height: 1;height: auto;margin-left: 8px;BORDER: NONE;"></i> <span class="qtyTotalMultiFlights">2</span> pessoas, <span class="classeTripMulti">Econômica</span></a>
 									<div class="panel-dropdown-content"> 
 										<div class="rooms_add">
-											<div id="panelTripMulti" class="panelTripMulti" style="padding:15px 15px 0 15px;">
+											<div id="panelTripMultiFlights" class="panelTripMultiFlights" style="padding:15px 15px 0 15px;">
 												<input type="hidden" id="panel1qts" value="1">  
-												<div class="qtyButtons qtyAdt">
+												<div class="qtyButtons qtyAdtFlights">
 													<input type="hidden" id="panel1adt" value="2">
 													<label>Adultos</label> 
 													<div class="qtyDecMulti"></div>
-													<input type="text" name="qtyInputMulti" value="2">
+													<input type="text" name="qtyInputMultiFlights" value="2">
 													<div class="qtyIncMulti"></div>
 												</div>
 												<div class="qtyButtons qtyChd">
@@ -716,7 +720,7 @@ function shortcode_motor_reserva_flights(){
 														<small style="font-weight: 500;font-size: 12px;">Até 11 anos</small>
 													</label> 
 													<div class="qtyDecMulti"></div>
-													<input type="text" name="qtyInputMulti" value="0" max="4">
+													<input type="text" name="qtyInputMultiFlights" value="0" max="4">
 													<div class="qtyIncMulti"></div>
 												</div> 
 												<div class="idade_chd1" style="display:none">
@@ -861,7 +865,7 @@ function shortcode_motor_reserva_flights(){
 											<ul style="padding:0;margin: 0;"></ul>
 										</div>
 									</div> 
-									<i class="fa fa-map-marker"></i>
+									<i class="fas fa-map-marker-alt"></i>
 								</div>
 							</div>
 							<div class="col-lg-2 fieldDates">
@@ -902,7 +906,7 @@ function shortcode_motor_reserva_flights(){
 											<ul style="padding:0;margin: 0;"></ul>
 										</div>
 									</div> 
-									<i class="fa fa-map-marker"></i>
+									<i class="fas fa-map-marker-alt"></i>
 								</div>
 							</div>
 							<div class="col-lg-2 fieldDates">
@@ -943,7 +947,7 @@ function shortcode_motor_reserva_flights(){
 											<ul style="padding:0;margin: 0;"></ul>
 										</div>
 									</div> 
-									<i class="fa fa-map-marker"></i>
+									<i class="fas fa-map-marker-alt"></i>
 								</div>
 							</div>
 							<div class="col-lg-2 fieldDates">
@@ -984,7 +988,7 @@ function shortcode_motor_reserva_flights(){
 											<ul style="padding:0;margin: 0;"></ul>
 										</div>
 									</div> 
-									<i class="fa fa-map-marker"></i>
+									<i class="fas fa-map-marker-alt"></i>
 								</div>
 							</div>
 							<div class="col-lg-2 fieldDates">
@@ -1043,6 +1047,9 @@ function shortcode_motor_reserva_flights_lateral(){
 		.wrn-btn{width:100%;font-size:16px;font-weight:400;text-transform:capitalize;height:calc(3rem + 9px)!important;border-radius:0 4px 4px 0;}
 		.wrn-btn:focus{outline:none;box-shadow:none;border:none;}
 		@media (min-width:992px){
+			.daterangepicker .drp-calendar{
+				    max-width: 280px !important;
+			}
 			.idtrecho{
 				padding: 10px 9px;font-size: 17px;font-weight: 800;text-align: center;background-color: '.(empty(get_option( 'cor_flights' )) ? '#000000' : get_option( 'cor_flights' )).';color:#fff;border-radius: 100%;width: 40px;height: 40px;margin: 5px 26px;
 			}
@@ -1095,7 +1102,7 @@ function shortcode_motor_reserva_flights_lateral(){
 			.ripple{
 				    margin-top: 15px;
 			}
-			.panel-dropdown .panel-dropdown-content{
+			.panel-dropdown-flights .panel-dropdown-content{
 				width: 245px !important;
 			}
 			.qtyButtons label{
@@ -1153,17 +1160,17 @@ function shortcode_motor_reserva_flights_lateral(){
 		.custom-search-input-2.inner-2 input[type=\'submit\']{-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;border-radius:3px;margin-top:10px}
 		.custom-search-input-2.inner-2 i{padding-right:10px;line-height:48px;height:48px;top:1px}
 		.custom-search-input-2.inner-2 .nice-select{border:1px solid #ededed}
-		.panel-dropdown{position:relative;text-align:left;padding:21px 6px 0 0px}
-		@media (max-width: 991px){.panel-dropdown{background-color:#fff;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;border-radius:3px;height:50px}
+		.panel-dropdown-flights{position:relative;text-align:left;padding:21px 6px 0 0px}
+		@media (max-width: 991px){.panel-dropdown-flights{background-color:#fff;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;border-radius:3px;height:50px}
 		}
-		.panel-dropdown a{color:#727b82;font-weight:500;transition:all 0.3s;display:flex;align-items:center;justify-content:flex-start;position:relative;top:1px;font-size: 13px;}
-		.panel-dropdown a:after{content:"\25BE";font-size:1.7rem;color:#999;font-weight:500;-moz-transition:all 0.3s ease-in-out;-o-transition:all 0.3s ease-in-out;-webkit-transition:all 0.3s ease-in-out;-ms-transition:all 0.3s ease-in-out;transition:all 0.3s ease-in-out;position:absolute;right:0;top:-11px;}
-		.panel-dropdown.active a:after{transform:rotate(180deg);}
-		.panel-dropdown .panel-dropdown-content{opacity:0;visibility:hidden;transition:all 0.3s;position:absolute;top:58px;left:0px;z-index:99;background:#fff;border-radius:4px;white-space:normal;width:310px;box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;border:none;}
-		.panel-dropdown .panel-dropdown-content:after{bottom:100%;left:15px;border:solid transparent;content:" ";height:0;width:0;position:absolute;pointer-events:none;border-bottom-color:#fff;border-width:7px;margin-left:-7px}
-		.panel-dropdown .panel-dropdown-content.right{left:auto;right:0}
-		.panel-dropdown .panel-dropdown-content.right:after{left:auto;right:15px}
-		.panel-dropdown.active .panel-dropdown-content{opacity:1;visibility:visible}
+		.panel-dropdown-flights a{color:#727b82;font-weight:500;transition:all 0.3s;display:flex;align-items:center;justify-content:flex-start;position:relative;top:1px;font-size: 13px;}
+		.panel-dropdown-flights a:after{content:"\25BE";font-size:1.7rem;color:#999;font-weight:500;-moz-transition:all 0.3s ease-in-out;-o-transition:all 0.3s ease-in-out;-webkit-transition:all 0.3s ease-in-out;-ms-transition:all 0.3s ease-in-out;transition:all 0.3s ease-in-out;position:absolute;right:0;top:-11px;}
+		.panel-dropdown-flights.active a:after{transform:rotate(180deg);}
+		.panel-dropdown-flights .panel-dropdown-content{opacity:0;visibility:hidden;transition:all 0.3s;position:absolute;top:58px;left:0px;z-index:99;background:#fff;border-radius:4px;white-space:normal;width:310px;box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;border:none;}
+		.panel-dropdown-flights .panel-dropdown-content:after{bottom:100%;left:15px;border:solid transparent;content:" ";height:0;width:0;position:absolute;pointer-events:none;border-bottom-color:#fff;border-width:7px;margin-left:-7px}
+		.panel-dropdown-flights .panel-dropdown-content.right{left:auto;right:0}
+		.panel-dropdown-flights .panel-dropdown-content.right:after{left:auto;right:15px}
+		.panel-dropdown-flights.active .panel-dropdown-content{opacity:1;visibility:visible}
 		.qtyButtons{display:flex;margin:0 0 13px 0}
 		.qtyButtons input{outline:0;font-size:16px;font-size:1rem;text-align:center;width:50px;height:36px !important;color:#333;line-height:36px;margin:0 !important;padding:0 5px !important;border:none;box-shadow:none;pointer-events:none;display:inline-block;border:none !important}
 		.qtyButtons label{font-weight:400;line-height:36px;padding-right:15px;display:block;flex:1;color:#626262;    font-size: 18px;}
@@ -1172,7 +1179,7 @@ function shortcode_motor_reserva_flights_lateral(){
 		.qtyInc:hover:before, .qtyDec:hover:before, .qtyIncMulti:hover:before, .qtyDecMulti:hover:before{color:#fff}
 		.qtyInc:before, .qtyIncMulti:before{content:"\002B";font-size:19px;font-weight:900;line-height: 29px;}
 		.qtyDec:before, .qtyDecMulti:before{content:"\2212";font-size:19px;font-weight:900;line-height: 29px;}
-		.qtyTotal, .qtyRoom, .qtyTotalMulti{border-radius:50%;color:#66676b;display:inline-block;font-size:14px;font-weight:600;font-family:\'Montserrat\', sans-serif;line-height:18px;text-align:center;position:relative;    top: 0px;
+		.qtyTotalFlights, .qtyRoom, .qtyTotalMultiFlights{border-radius:50%;color:#66676b;display:inline-block;font-size:14px;font-weight:600;font-family:\'Montserrat\', sans-serif;line-height:18px;text-align:center;position:relative;    top: 0px;
     left: 0px;
     height: 18px;
     width: 18px;
@@ -1481,18 +1488,18 @@ function shortcode_motor_reserva_flights_lateral(){
 						</div>
 						<div class="col-lg-12 fieldPax" style="    background-color: #fff;margin-bottom: 14px;">
 							<label class="label" style="">PASSAGEIROS E CLASSE</label>
-							<div class="panel-dropdown" id="panelDropdown" style="padding: 10px 0px;">
-								<a href="#"><i class="fa fa-user" style="position: unset;padding: 0;line-height: 1;height: auto;margin-left: 8px;BORDER: NONE;"></i> <span class="qtyTotal">2</span> pessoas, <span class="classTrip">Econômica</span></a>
+							<div class="panel-dropdown-flights panelDropdownFlights" id="panelDropdownFlights" style="padding: 10px 0px;">
+								<a href="#"><i class="fa fa-user" style="position: unset;padding: 0;line-height: 1;height: auto;margin-left: 8px;BORDER: NONE;"></i> <span class="qtyTotalFlights">2</span> pessoas, <span class="classTrip">Econômica</span></a>
 								<div class="panel-dropdown-content">
 									<input type="hidden" id="qtd_room_add" value="1">
 									<div class="rooms_add">
-										<div id="panelTrip" class="panelTrip" style="padding:15px 15px 0 15px;">
+										<div id="panelTripFlights" class="panelTripFlights" style="padding:15px 15px 0 15px;">
 											<input type="hidden" id="panel1qts" value="1">  
-											<div class="qtyButtons qtyAdt">
+											<div class="qtyButtons qtyAdtFlights">
 												<input type="hidden" id="panel1adt" value="2">
 												<label>Adultos</label> 
 												<div class="qtyDec"></div>
-												<input type="text" name="qtyInput" value="2">
+												<input type="text" name="qtyInputFlights" value="2">
 												<div class="qtyInc"></div>
 											</div>
 											<div class="qtyButtons qtyChd">
@@ -1502,7 +1509,7 @@ function shortcode_motor_reserva_flights_lateral(){
 													<small style="font-weight: 500;font-size: 12px;">Até 11 anos</small>
 												</label> 
 												<div class="qtyDec"></div>
-												<input type="text" name="qtyInput" value="0" max="4">
+												<input type="text" name="qtyInputFlights" value="0" max="4">
 												<div class="qtyInc"></div>
 											</div> 
 											<div class="idade_chd1" style="display:none">
@@ -1827,17 +1834,17 @@ function shortcode_motor_reserva_flights_lateral(){
                             <div class="col-lg-12 fieldPax">
                                 <div style="    background-color: #fff;margin-bottom: 14px;">
                                     <label class="label" style="">PASSAGEIROS E CLASSE</label>
-                                    <div class="panel-dropdown panel-multi" id="panelDropdownMulti" style="padding: 10px 0px;">
-                                        <a href="#"> <span class="qtyTotalMulti">2</span> pessoas, <span class="classeTripMulti">Econômica</span></a>
+                                    <div class="panel-dropdown-flights panel-multi" id="panelDropdownMultiFlights" style="padding: 10px 0px;">
+                                        <a href="#"> <span class="qtyTotalMultiFlights">2</span> pessoas, <span class="classeTripMulti">Econômica</span></a>
                                         <div class="panel-dropdown-content"> 
                                             <div class="rooms_add">
-                                                <div id="panelTripMulti" class="panelTripMulti" style="padding:15px 15px 0 15px;">
+                                                <div id="panelTripMultiFlights" class="panelTripMultiFlights" style="padding:15px 15px 0 15px;">
                                                     <input type="hidden" id="panel1qts" value="1">  
-                                                    <div class="qtyButtons qtyAdt">
+                                                    <div class="qtyButtons qtyAdtFlights">
                                                         <input type="hidden" id="panel1adt" value="2">
                                                         <label>Adultos</label> 
                                                         <div class="qtyDecMulti"></div>
-                                                        <input type="text" name="qtyInputMulti" value="2">
+                                                        <input type="text" name="qtyInputMultiFlights" value="2">
                                                         <div class="qtyIncMulti"></div>
                                                     </div>
                                                     <div class="qtyButtons qtyChd">
@@ -1847,7 +1854,7 @@ function shortcode_motor_reserva_flights_lateral(){
                                                             <small style="font-weight: 500;font-size: 12px;">Até 11 anos</small>
                                                         </label> 
                                                         <div class="qtyDecMulti"></div>
-                                                        <input type="text" name="qtyInputMulti" value="0" max="4">
+                                                        <input type="text" name="qtyInputMultiFlights" value="0" max="4">
                                                         <div class="qtyIncMulti"></div>
                                                     </div> 
                                                     <div class="idade_chd1" style="display:none">
@@ -2000,7 +2007,7 @@ function shortcode_resultados_flights(){
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 				<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 				<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet">
-				<link href="'.plugin_dir_url( __FILE__ ) . 'includes/assets/css/results.css" rel="stylesheet">'; 
+				<link href="'.plugin_dir_url( __FILE__ ) . 'includes/assets/css/results.css?v='.date("YmdHis").'" rel="stylesheet">'; 
 
 	$retorno .= '<style>
 		body{
@@ -2442,18 +2449,27 @@ function shortcode_resultados_flights(){
 					<div class="results"> 
 						<div class="resultsFlights">';
 							for($i=0; $i<10; $i++){
-								$retorno .= '<div class="elementor-container elementor-column-gap-default" style="margin-bottom: 20px;">
-								    <div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-3c1f62c" data-id="3c1f62c" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>
+								$retorno .= '<div class="elementor-container elementor-column-gap-default" style="margin-bottom: 20px;display:flex;background-color: #fff; ">
+								    <div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-3c1f62c" data-id="3c1f62c" data-element_type="column" data-settings=\'{"background_background":"classic"}\' style="width:75%">
 								        <div class="elementor-widget-wrap elementor-element-populated">
 								            <section
 								                class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no row-is-loading"
 								                data-id="bdb8934"
-								                data-element_type="section"
+								                data-element_type="section" style="margin-bottom: 30px;"
 								            >
 								                <div class="elementor-container elementor-column-gap-default">
 
 								                </div>
 								            </section>   
+								            <section
+								                class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no row-is-loading"
+								                data-id="bdb8934"
+								                data-element_type="section" style="margin-bottom: 30px;"
+								            >
+								                <div class="elementor-container elementor-column-gap-default">
+
+								                </div>
+								            </section>  
 								            <section
 								                class="elementor-section elementor-inner-section elementor-element elementor-element-764c24b elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no row-is-loading"
 								                data-id="764c24b"
@@ -2466,9 +2482,19 @@ function shortcode_resultados_flights(){
 								    <div class="elementor-column elementor-col-33 elementor-top-column elementor-element elementor-element-8a66ad2 rowJur" data-id="8a66ad2" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>
 								        <div class="elementor-widget-wrap elementor-element-populated">
 								            <section
+								                class="elementor-section elementor-inner-section elementor-element elementor-element-29d3bb9 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
+								                data-id="29d3bb9"
+								                data-element_type="section"
+								            >
+								                <div class="elementor-container elementor-column-gap-default">
+								                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-8ce4cf7 row-is-loading" data-id="8ce4cf7" data-element_type="column" style="height: 20px !important;min-height: 20px;"> 
+								                    </div>
+								                </div>
+								            </section>
+								            <section
 								                class="elementor-section elementor-inner-section elementor-element elementor-element-83cc7be elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
 								                data-id="83cc7be"
-								                data-element_type="section"
+								                data-element_type="section" style="margin-bottom: 30px;"
 								            >
 								                <div class="elementor-container elementor-column-gap-default">
 								                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-6fbcd6c row-is-loading" data-id="6fbcd6c" data-element_type="column"> 
@@ -2481,7 +2507,17 @@ function shortcode_resultados_flights(){
 								                data-element_type="section"
 								            >
 								                <div class="elementor-container elementor-column-gap-default">
-								                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-8ce4cf7 row-is-loading" data-id="8ce4cf7" data-element_type="column"> 
+								                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-8ce4cf7 row-is-loading" data-id="8ce4cf7" data-element_type="column" style="height: 20px !important;min-height: 20px;"> 
+								                    </div>
+								                </div>
+								            </section>
+								            <section
+								                class="elementor-section elementor-inner-section elementor-element elementor-element-29d3bb9 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no"
+								                data-id="29d3bb9"
+								                data-element_type="section"
+								            >
+								                <div class="elementor-container elementor-column-gap-default">
+								                    <div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-8ce4cf7 row-is-loading" data-id="8ce4cf7" data-element_type="column" style="height: 20px !important;min-height: 20px;"> 
 								                    </div>
 								                </div>
 								            </section>
@@ -5428,19 +5464,27 @@ function send_mail_confirmation_flights(){
 		    ], 
 		];
 
-		$custom_mailer = new Custom_Mailer();
+		$custom_mailer = new Custom_Mailer_Flights();
 		$custom_mailer->send($_POST['email_order'], 'Pedido efetuado com sucesso!', $body, $headers, $my_attachments); 
 		$custom_mailer->send(get_option( 'admin_email' ), $subject, $body, $headers, $my_attachments); 
 
 }
 
+function get_page_by_slug($page_slug, $output = OBJECT, $post_type = 'page' ) { 
+  	global $wpdb; 
+   	$page = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type= %s AND post_status = 'publish'", $page_slug, $post_type ) ); 
+	if ( $page ) 
+        return get_post($page, $output); 
+    return false; 
+}
+
 global $wpdb;
 
-$check_page_exist = get_page_by_title('Resultados de Voos', 'OBJECT', 'page');  
+$check_page_exist = get_page_by_slug('offers-flights');  
 
-if(empty($check_page_exist)) {
+if(!$check_page_exist) {
 
-    $wpdb->insert('wp_posts', array( 
+    $wpdb->insert($wpdb->posts, array( 
         'comment_status' => 'close', 
         'ping_status'    => 'close', 
         'post_author'    => 1, 
@@ -5457,7 +5501,7 @@ $check_page_exist = get_page_by_title('Finalizar pedido - Vôos', 'OBJECT', 'pag
 
 if(empty($check_page_exist)) {
 
-    $wpdb->insert('wp_posts', array( 
+    $wpdb->insert($wpdb->posts, array( 
         'comment_status' => 'close', 
         'ping_status'    => 'close', 
         'post_author'    => 1, 
@@ -5477,7 +5521,7 @@ if(empty($check_page_exist)) {
 
 
 
-    $wpdb->insert('wp_posts', array( 
+    $wpdb->insert($wpdb->posts, array( 
 
         'comment_status' => 'close', 
 
@@ -5882,7 +5926,7 @@ if(empty($check_page_exist)) {
 			});
 
 			function copy(text, target) {
-				navigator.clipboard.writeText('[TTBOOKING_MOTOR_RESERVA]');
+				navigator.clipboard.writeText('[TTBOOKING_MOTOR_RESERVA_FLIGHTS]');
 
 				jQuery("#copy_button_1").attr('title', 'Copiado!').tooltip('_fixTitle').tooltip('show');
 

@@ -1,43 +1,41 @@
 /********** Panel_Dropdown ***********/
-function close_panel_dropdown() {
-    jQuery("#panelDropdown").removeClass("active")
+function close_panel_dropdown_flights() {
+    jQuery("#panelDropdownFlights").removeClass("active")
 }
 function close_panel_dropdown_multi() {
-    jQuery("#panelDropdownMulti").removeClass("active")
+    jQuery("#panelDropdownMultiFlights").removeClass("active")
 }
 
-jQuery("#panelDropdown a").on("click", function (event) {
-    if (jQuery(this).parent().is(".active")) {
-        close_panel_dropdown()
-    } else {
-        close_panel_dropdown();
-        jQuery(this).parent().addClass("active")
+jQuery("#panelDropdownFlights a").on("click", function (event) {
+    if (jQuery("#panelDropdownFlights").hasClass("active")) { 
+        close_panel_dropdown_flights()
+    } else {  
+        jQuery("#panelDropdownFlights").addClass("active")
     };
     event.preventDefault()
 });
 var mouse_is_inside = false;
-jQuery("#panelDropdown").hover(function () {
-    mouse_is_inside = true
+jQuery("#panelDropdownFlights").hover(function () {
+    mouse_is_inside = true  
 }, function () {
-    mouse_is_inside = false
+    mouse_is_inside = false 
 });
 jQuery("body").mouseup(function () {
     if (!mouse_is_inside) {
-        close_panel_dropdown()
+        close_panel_dropdown_flights()
     }
 });
 
-jQuery("#panelDropdownMulti a").on("click", function (event) {
-    if (jQuery(this).parent().is(".active")) {
+jQuery("#panelDropdownMultiFlights a").on("click", function (event) {
+    if (jQuery("#panelDropdownMultiFlights").hasClass("active")) { 
         close_panel_dropdown_multi()
     } else {
-        close_panel_dropdown_multi();
-        jQuery(this).parent().addClass("active")
+        jQuery("#panelDropdownMultiFlights").addClass("active")
     };
     event.preventDefault()
 });
 var mouse_is_inside = false;
-jQuery("#panelDropdownMulti").hover(function () {
+jQuery("#panelDropdownMultiFlights").hover(function () {
     mouse_is_inside = true
 }, function () {
     mouse_is_inside = false
@@ -51,18 +49,18 @@ jQuery("body").mouseup(function () {
 
 /********** Quality ***********/
 function qtySum(){
-    var arr = document.getElementsByName('qtyInput');
+    var arr = document.getElementsByName('qtyInputFlights');
     var tot=0;
     for(var i=0;i<arr.length;i++){
         if(parseInt(arr[i].value))
         tot += parseInt(arr[i].value);
     }
-    var cardQty = document.querySelector(".qtyTotal");
+    var cardQty = document.querySelector(".qtyTotalFlights");
     var url_atual = window.location.href;
     cardQty.innerHTML = tot;
 
-    var qtd_adt = parseInt(jQuery("#panelTrip .qtyAdt input").val());
-    var qtd_chd = parseInt(jQuery("#panelTrip .qtyChd input").val());  
+    var qtd_adt = parseInt(jQuery("#panelTripFlights .qtyAdtFlights input").val());
+    var qtd_chd = parseInt(jQuery("#panelTripFlights .qtyChd input").val());  
 
     jQuery("#criancas").val(qtd_chd);
     jQuery("#adultos").val(qtd_adt);
@@ -70,18 +68,18 @@ function qtySum(){
 qtySum();
 
 function qtySumMulti(){
-    var arr = document.getElementsByName('qtyInputMulti');
+    var arr = document.getElementsByName('qtyInputMultiFlights');
     var tot=0;
     for(var i=0;i<arr.length;i++){
         if(parseInt(arr[i].value))
         tot += parseInt(arr[i].value);
     }
-    var cardQty = document.querySelector(".qtyTotalMulti");
+    var cardQty = document.querySelector(".qtyTotalMultiFlights");
     var url_atual = window.location.href;
     cardQty.innerHTML = tot;
 
-    var qtd_adt = parseInt(jQuery("#panelTripMulti .qtyAdt input").val());
-    var qtd_chd = parseInt(jQuery("#panelTripMulti .qtyChd input").val());  
+    var qtd_adt = parseInt(jQuery("#panelTripMultiFlights .qtyAdtFlights input").val());
+    var qtd_chd = parseInt(jQuery("#panelTripMultiFlights .qtyChd input").val());  
 
     jQuery("#criancas").val(qtd_chd);
     jQuery("#adultos").val(qtd_adt);
@@ -90,30 +88,7 @@ qtySumMulti();
 
 jQuery(function() { 
 	if(jQuery("#type_motor").val() == 1){
-		localStorage.removeItem("TYPE_FLIGHT");
-		localStorage.removeItem("ADULTOS_FLIGHT");
-		localStorage.removeItem("CRIANCAS_FLIGHT");
-
-		localStorage.removeItem("ORIGEM_FLIGHT");
-		localStorage.removeItem("DESTINO_FLIGHT");
-
-		localStorage.removeItem("ORIGEM_FLIGHT_TRECHO1");
-		localStorage.removeItem("ORIGEM_FLIGHT_TRECHO2");
-		localStorage.removeItem("ORIGEM_FLIGHT_TRECHO3");
-		localStorage.removeItem("ORIGEM_FLIGHT_TRECHO4");
-		localStorage.removeItem("ORIGEM_FLIGHT_TRECHO5");
-
-		localStorage.removeItem("DESTINO_FLIGHT_TRECHO1");
-		localStorage.removeItem("DESTINO_FLIGHT_TRECHO2");
-		localStorage.removeItem("DESTINO_FLIGHT_TRECHO3");
-		localStorage.removeItem("DESTINO_FLIGHT_TRECHO4");
-		localStorage.removeItem("DESTINO_FLIGHT_TRECHO5");
-
-		localStorage.removeItem("SELECTED_FLIGHT_TRECHO1");
-		localStorage.removeItem("SELECTED_FLIGHT_TRECHO2");
-		localStorage.removeItem("SELECTED_FLIGHT_TRECHO3");
-		localStorage.removeItem("SELECTED_FLIGHT_TRECHO4");
-		localStorage.removeItem("SELECTED_FLIGHT_TRECHO5");
+		localStorage.clear();
 	}
    	jQuery(".qtyDecMulti, .qtyIncMulti").on("click", function() { 
 
@@ -160,13 +135,13 @@ jQuery(function() {
 
         jQuerybutton.parent().find("input").val(newVal);
         qtySumMulti();
-        jQuery(".qtyTotalMulti").addClass("rotate-x");
+        jQuery(".qtyTotalMultiFlights").addClass("rotate-x");
    });
 
     function removeAnimationMulti() { 
-        jQuery(".qtyTotalMulti").removeClass("rotate-x");  
+        jQuery(".qtyTotalMultiFlights").removeClass("rotate-x");  
     }
-    const counterMulti = document.querySelector(".qtyTotalMulti"); 
+    const counterMulti = document.querySelector(".qtyTotalMultiFlights"); 
     counterMulti.addEventListener("animationend", removeAnimationMulti);
 
    jQuery(".qtyDec, .qtyInc").on("click", function() { 
@@ -214,13 +189,13 @@ jQuery(function() {
 
         jQuerybutton.parent().find("input").val(newVal);
         qtySum();
-        jQuery(".qtyTotal").addClass("rotate-x");
+        jQuery(".qtyTotalFlights").addClass("rotate-x");
    });
 
     function removeAnimation() { 
-        jQuery(".qtyTotal").removeClass("rotate-x");  
+        jQuery(".qtyTotalFlights").removeClass("rotate-x");  
     }
-    const counter = document.querySelector(".qtyTotal"); 
+    const counter = document.querySelector(".qtyTotalFlights"); 
     counter.addEventListener("animationend", removeAnimation);
 });
 
@@ -1192,6 +1167,7 @@ function change_type_flight(type){
 }
 
 function show_trecho(id, hide){
+    var url_atual = window.location.href;
 	var prev = parseInt(id)-1;
 	var prevHide = parseInt(hide)-1;
 
@@ -1207,6 +1183,7 @@ function show_trecho(id, hide){
 }
 
 function hide_trecho(id){ 
+    var url_atual = window.location.href;
 	var prev = parseInt(id)-1;
 
 	jQuery("#trecho"+id).attr("style", "display:none;");
