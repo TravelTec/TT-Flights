@@ -1,3 +1,8 @@
+
+function show_tab(type){
+     
+}
+
 /********** Panel_Dropdown ***********/
 function close_panel_dropdown_flights() {
     jQuery("#panelDropdownFlights").removeClass("active")
@@ -48,14 +53,14 @@ jQuery("body").mouseup(function () {
 
 
 /********** Quality ***********/
-function qtySum(){
+function qtySumFlights(){
     var arr = document.getElementsByName('qtyInputFlights');
     var tot=0;
     for(var i=0;i<arr.length;i++){
         if(parseInt(arr[i].value))
         tot += parseInt(arr[i].value);
     }
-    var cardQty = document.querySelector(".qtyTotalFlights");
+    var cardQty = document.querySelector(".qtyTotalFlights"); 
     var url_atual = window.location.href;
     cardQty.innerHTML = tot;
 
@@ -65,7 +70,7 @@ function qtySum(){
     jQuery("#criancas").val(qtd_chd);
     jQuery("#adultos").val(qtd_adt);
 } 
-qtySum();
+qtySumFlights();
 
 function qtySumMulti(){
     var arr = document.getElementsByName('qtyInputMultiFlights');
@@ -144,12 +149,12 @@ jQuery(function() {
     const counterMulti = document.querySelector(".qtyTotalMultiFlights"); 
     counterMulti.addEventListener("animationend", removeAnimationMulti);
 
-   jQuery(".qtyDec, .qtyInc").on("click", function() { 
+   jQuery(".qtyDecFlight, .qtyIncFlight").on("click", function() {  
 
         var jQuerybutton = jQuery(this);
         var oldValue = jQuerybutton.parent().find("input").val();  
 
-        if (jQuerybutton.hasClass('qtyInc')) {
+        if (jQuerybutton.hasClass('qtyIncFlight')) {
             var newVal = parseFloat(oldValue) + 1; 
 
             if (newVal > 4) {
@@ -188,7 +193,7 @@ jQuery(function() {
         } 
 
         jQuerybutton.parent().find("input").val(newVal);
-        qtySum();
+        qtySumFlights();
         jQuery(".qtyTotalFlights").addClass("rotate-x");
    });
 
@@ -696,11 +701,10 @@ function pesquisar_origem_flight(){
 
         };
 
-
-
+ 
         jQuery.ajax({
 
-            url : wp_ajax_flights.ajaxurl,
+            url : jQuery("#url_ajax").val(),
 
             type : 'post',
 
@@ -804,7 +808,7 @@ function pesquisar_destino_flight(){
 
         jQuery.ajax({
 
-            url : wp_ajax_flights.ajaxurl,
+            url : jQuery("#url_ajax").val(),
 
             type : 'post',
 
@@ -879,10 +883,7 @@ function pesquisar_destino_flight(){
 
 function pesquisar_origem(field, x){ 
 
-	var contador_exibicao = 0;
-
-	console.log(field);
-
+	var contador_exibicao = 0; 
     var destino = jQuery("#"+field).val();
 
 
@@ -908,7 +909,7 @@ function pesquisar_origem(field, x){
 
         jQuery.ajax({
 
-            url : wp_ajax_flights.ajaxurl,
+            url : jQuery("#url_ajax").val(),
 
             type : 'post',
 
@@ -981,9 +982,7 @@ function pesquisar_origem(field, x){
 }
 function pesquisar_destino(field, x){ 
 
-	var contador_exibicao = 0;
-
-	console.log(field);
+	var contador_exibicao = 0; 
 
     var destino = jQuery("#"+field).val();
 
@@ -1010,7 +1009,7 @@ function pesquisar_destino(field, x){
 
         jQuery.ajax({
 
-            url : wp_ajax_flights.ajaxurl,
+            url : jQuery("#url_ajax").val(),
 
             type : 'post',
 
@@ -1141,8 +1140,12 @@ function change_type_flight(type){
 		jQuery("button.flightRoundTrip").addClass("active");
 		jQuery("button.multiWay").removeClass("active");
 
-		jQuery("#flightsPadron").attr("style", "");
-		jQuery("#multiway").attr("style", "display:none");
+		if(jQuery("#type_motor").val() == 3){
+			jQuery("#flightsPadron").attr("style", "height:40px !important");
+		}else{ 
+			jQuery("#flightsPadron").attr("style", "");
+		}
+		jQuery("#multiway").attr("style", "display:none !important");
 
 		jQuery(".dateReturn").attr("style", "");
 	}else if(type == 2){
@@ -1150,16 +1153,20 @@ function change_type_flight(type){
 		jQuery("button.flightRoundTrip").removeClass("active");
 		jQuery("button.multiWay").removeClass("active");
 
-		jQuery("#flightsPadron").attr("style", "");
-		jQuery("#multiway").attr("style", "display:none");
+		if(jQuery("#type_motor").val() == 3){
+			jQuery("#flightsPadron").attr("style", "height:40px !important");
+		}else{ 
+			jQuery("#flightsPadron").attr("style", "");
+		}
+		jQuery("#multiway").attr("style", "display:none !important");
 
-		jQuery(".dateReturn").attr("style", "display:none");
+		jQuery(".dateReturn").attr("style", "display:none !important");
 	}else if(type == 3){
 		jQuery("button.oneWay").removeClass("active");
 		jQuery("button.flightRoundTrip").removeClass("active");
 		jQuery("button.multiWay").addClass("active");
 
-		jQuery("#flightsPadron").attr("style", "display:none");
+		jQuery("#flightsPadron").attr("style", "display:none !important");
 		jQuery("#multiway").attr("style", "");
 	}
 
@@ -1271,7 +1278,7 @@ function change_fields_trip(type = 0){
 
 }
 
-function search_results(){
+function search_results_flights(){
 
 	var type_flight = jQuery("#type_flight").val();
 

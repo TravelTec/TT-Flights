@@ -137,7 +137,7 @@ function get_data_results_flights(){
 
 	jQuery.ajax({
 
-        url : wp_ajax_flights.ajaxurl, 
+        url : jQuery("#url_ajax").val(), 
         type : 'post', 
         data : data, 
         success : function( resposta ) {
@@ -158,7 +158,7 @@ function get_companhias(){
 
 	jQuery.ajax({
 
-        url : wp_ajax_flights.ajaxurl, 
+        url : jQuery("#url_ajax").val(), 
         type : 'post', 
         data : data, 
         success : function( resposta ) {
@@ -178,7 +178,7 @@ function get_aeroportos(){
 
 	jQuery.ajax({
 
-        url : wp_ajax_flights.ajaxurl, 
+        url : jQuery("#url_ajax").val(), 
         type : 'post', 
         data : data, 
         success : function( resposta ) {
@@ -365,188 +365,190 @@ function storage_json_data(){
 				} 
 			/* FIM SEGUNDA ROTA */
 
-			/* TERCEIRA ROTA */  
-				if(localStorage.getItem("DESTINO_FLIGHT_TRECHO3") != null){ 
-					innerObj["flightsT3"] = [];
-				 
-					var aeroDepartureTrecho3  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO3");
-					var aeroDescDepartureTrecho3  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO3").split(",");
+			if(localStorage.getItem("TYPE_FLIGHT") == 3){
+				/* TERCEIRA ROTA */  
+					if(localStorage.getItem("DESTINO_FLIGHT_TRECHO3") != null){ 
+						innerObj["flightsT3"] = [];
+					 
+						var aeroDepartureTrecho3  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO3");
+						var aeroDescDepartureTrecho3  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO3").split(",");
 
-					var aeroArrivalTrecho3  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO3");
-					var aeroDescArrivalTrecho3  = localStorage.getItem("DESTINO_FLIGHT_TRECHO3").split(",");
+						var aeroArrivalTrecho3  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO3");
+						var aeroDescArrivalTrecho3  = localStorage.getItem("DESTINO_FLIGHT_TRECHO3").split(",");
 
-					var checkinTrecho3 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO3"), 'DD-MM-YYYY').format("LL");
+						var checkinTrecho3 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO3"), 'DD-MM-YYYY').format("LL");
 
-					var textTypeTrecho3  = 'TRECHO 3';
-					var iconTypeTrecho3  = 'fas fa-plane-arrival'; 
+						var textTypeTrecho3  = 'TRECHO 3';
+						var iconTypeTrecho3  = 'fas fa-plane-arrival'; 
 
-					jQuery(item.segments).each(function(f3, flight3) { 
+						jQuery(item.segments).each(function(f3, flight3) { 
 
-			    		var innerFlightsT3 = {}; 
-						if(flight3.routeRPH == 2){     
-							innerFlightsT3["id"] = f3;    
-							innerFlightsT3["segment"] = flight3;
-							innerFlightsT3["aeroDeparture"] = aeroDepartureTrecho3; 
-							innerFlightsT3["aeroDescDeparture"] = aeroDescDepartureTrecho3[0]; 
-							innerFlightsT3["aeroArrival"] = aeroArrivalTrecho3; 
-							innerFlightsT3["aeroDescArrival"] = aeroDescArrivalTrecho3[0]; 
-							innerFlightsT3["checkin"] = checkinTrecho3; 
-							innerFlightsT3["textType"] = textTypeTrecho3; 
-							innerFlightsT3["iconType"] = iconTypeTrecho3; 
-							innerFlightsT3["companhia"] = item.validatingBy.name;
-							for(var x = 0; x < logos.length; x++){
-								if(item.validatingBy.iata == logos[x]["cod_companhia"]){
-									innerFlightsT3["logoCompanhia"] = logos[x]["img_companhia"];   
+				    		var innerFlightsT3 = {}; 
+							if(flight3.routeRPH == 2){     
+								innerFlightsT3["id"] = f3;    
+								innerFlightsT3["segment"] = flight3;
+								innerFlightsT3["aeroDeparture"] = aeroDepartureTrecho3; 
+								innerFlightsT3["aeroDescDeparture"] = aeroDescDepartureTrecho3[0]; 
+								innerFlightsT3["aeroArrival"] = aeroArrivalTrecho3; 
+								innerFlightsT3["aeroDescArrival"] = aeroDescArrivalTrecho3[0]; 
+								innerFlightsT3["checkin"] = checkinTrecho3; 
+								innerFlightsT3["textType"] = textTypeTrecho3; 
+								innerFlightsT3["iconType"] = iconTypeTrecho3; 
+								innerFlightsT3["companhia"] = item.validatingBy.name;
+								for(var x = 0; x < logos.length; x++){
+									if(item.validatingBy.iata == logos[x]["cod_companhia"]){
+										innerFlightsT3["logoCompanhia"] = logos[x]["img_companhia"];   
+									}
+								} 
+								innerFlightsT3["rateToken"] = flight3.rateToken;
+								innerFlightsT3["leg"] = flight3.legs;
+								innerFlightsT3["horaIda"] = moment(flight3.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								innerFlightsT3["horaVolta"] = moment(flight3.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								if(flight3.numberOfStops == 0){
+									var stops = 'Direto';
+								}else if(flight3.numberOfStops == 1){
+									var stops = '1 parada';
+								}else if(flight3.numberOfStops == 2){
+									var stops = '2 paradas';
 								}
-							} 
-							innerFlightsT3["rateToken"] = flight3.rateToken;
-							innerFlightsT3["leg"] = flight3.legs;
-							innerFlightsT3["horaIda"] = moment(flight3.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							innerFlightsT3["horaVolta"] = moment(flight3.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							if(flight3.numberOfStops == 0){
-								var stops = 'Direto';
-							}else if(flight3.numberOfStops == 1){
-								var stops = '1 parada';
-							}else if(flight3.numberOfStops == 2){
-								var stops = '2 paradas';
-							}
-							innerFlightsT3["paradas"] = stops; 
-							innerFlightsT3["duracao"] = getTimeFromMins(flight3.duration);
-							if(flight3.fareProfile.baggage.isIncluded){
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
-							}else{ 
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
-							}
-							innerFlightsT3["bagagem"] = baggage;
-
-							innerObj["flightsT3"].push(innerFlightsT3); 
-						}
-					});
-
-				} 
-			/* FIM TERCEIRA ROTA */
-
-			/* QUARTA ROTA */  
-				if(localStorage.getItem("DESTINO_FLIGHT_TRECHO4") != null){ 
-					innerObj["flightsT4"] = [];
-				 
-					var aeroDepartureTrecho4  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO4");
-					var aeroDescDepartureTrecho4  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO4").split(",");
-
-					var aeroArrivalTrecho4  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO4");
-					var aeroDescArrivalTrecho4  = localStorage.getItem("DESTINO_FLIGHT_TRECHO4").split(",");
-
-					var checkinTrecho4 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO4"), 'DD-MM-YYYY').format("LL");
-
-					var textTypeTrecho4  = 'TRECHO 4';
-					var iconTypeTrecho4  = 'fas fa-plane-departure'; 
-
-					jQuery(item.segments).each(function(f4, flight4) { 
-
-			    		var innerFlightsT4 = {}; 
-						if(flight4.routeRPH == 3){     
-							innerFlightsT4["id"] = f4;    
-							innerFlightsT4["segment"] = flight4;
-							innerFlightsT4["aeroDeparture"] = aeroDepartureTrecho4; 
-							innerFlightsT4["aeroDescDeparture"] = aeroDescDepartureTrecho4[0]; 
-							innerFlightsT4["aeroArrival"] = aeroArrivalTrecho4; 
-							innerFlightsT4["aeroDescArrival"] = aeroDescArrivalTrecho4[0]; 
-							innerFlightsT4["checkin"] = checkinTrecho4; 
-							innerFlightsT4["textType"] = textTypeTrecho4; 
-							innerFlightsT4["iconType"] = iconTypeTrecho4; 
-							innerFlightsT4["companhia"] = item.validatingBy.name;
-							for(var x = 0; x < logos.length; x++){
-								if(item.validatingBy.iata == logos[x]["cod_companhia"]){
-									innerFlightsT4["logoCompanhia"] = logos[x]["img_companhia"];   
+								innerFlightsT3["paradas"] = stops; 
+								innerFlightsT3["duracao"] = getTimeFromMins(flight3.duration);
+								if(flight3.fareProfile.baggage.isIncluded){
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
+								}else{ 
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
 								}
-							} 
-							innerFlightsT4["rateToken"] = flight4.rateToken;
-							innerFlightsT4["leg"] = flight4.legs;
-							innerFlightsT4["horaIda"] = moment(flight4.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							innerFlightsT4["horaVolta"] = moment(flight4.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							if(flight4.numberOfStops == 0){
-								var stops = 'Direto';
-							}else if(flight4.numberOfStops == 1){
-								var stops = '1 parada';
-							}else if(flight4.numberOfStops == 2){
-								var stops = '2 paradas';
+								innerFlightsT3["bagagem"] = baggage;
+
+								innerObj["flightsT3"].push(innerFlightsT3); 
 							}
-							innerFlightsT4["paradas"] = stops; 
-							innerFlightsT4["duracao"] = getTimeFromMins(flight4.duration);
-							if(flight4.fareProfile.baggage.isIncluded){
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
-							}else{ 
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
-							}
-							innerFlightsT4["bagagem"] = baggage;
+						});
 
-							innerObj["flightsT4"].push(innerFlightsT4); 
-						}
-					});
+					} 
+				/* FIM TERCEIRA ROTA */
 
-				} 
-			/* FIM QUARTA ROTA */
+				/* QUARTA ROTA */  
+					if(localStorage.getItem("DESTINO_FLIGHT_TRECHO4") != null){ 
+						innerObj["flightsT4"] = [];
+					 
+						var aeroDepartureTrecho4  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO4");
+						var aeroDescDepartureTrecho4  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO4").split(",");
 
-			/* QUINTA ROTA */  
-				if(localStorage.getItem("DESTINO_FLIGHT_TRECHO5") != null){ 
-					innerObj["flightsT5"] = [];
-				 
-					var aeroDepartureTrecho5  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO5");
-					var aeroDescDepartureTrecho5  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO5").split(",");
+						var aeroArrivalTrecho4  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO4");
+						var aeroDescArrivalTrecho4  = localStorage.getItem("DESTINO_FLIGHT_TRECHO4").split(",");
 
-					var aeroArrivalTrecho5  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO5");
-					var aeroDescArrivalTrecho5  = localStorage.getItem("DESTINO_FLIGHT_TRECHO5").split(",");
+						var checkinTrecho4 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO4"), 'DD-MM-YYYY').format("LL");
 
-					var checkinTrecho5 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO5"), 'DD-MM-YYYY').format("LL");
+						var textTypeTrecho4  = 'TRECHO 4';
+						var iconTypeTrecho4  = 'fas fa-plane-departure'; 
 
-					var textTypeTrecho5  = 'TRECHO 5';
-					var iconTypeTrecho5  = 'fas fa-plane-arrival'; 
+						jQuery(item.segments).each(function(f4, flight4) { 
 
-					jQuery(item.segments).each(function(f5, flight5) { 
-
-			    		var innerFlightsT5 = {}; 
-						if(flight5.routeRPH == 4){ 
-							innerFlightsT5["id"] = f5;   
-							innerFlightsT5["segment"] = flight5;     
-							innerFlightsT5["aeroDeparture"] = aeroDepartureTrecho5; 
-							innerFlightsT5["aeroDescDeparture"] = aeroDescDepartureTrecho5[0]; 
-							innerFlightsT5["aeroArrival"] = aeroArrivalTrecho5; 
-							innerFlightsT5["aeroDescArrival"] = aeroDescArrivalTrecho5[0]; 
-							innerFlightsT5["checkin"] = checkinTrecho5; 
-							innerFlightsT5["textType"] = textTypeTrecho5; 
-							innerFlightsT5["iconType"] = iconTypeTrecho5; 
-							innerFlightsT5["companhia"] = item.validatingBy.name;
-							for(var x = 0; x < logos.length; x++){
-								if(item.validatingBy.iata == logos[x]["cod_companhia"]){
-									innerFlightsT5["logoCompanhia"] = logos[x]["img_companhia"];   
+				    		var innerFlightsT4 = {}; 
+							if(flight4.routeRPH == 3){     
+								innerFlightsT4["id"] = f4;    
+								innerFlightsT4["segment"] = flight4;
+								innerFlightsT4["aeroDeparture"] = aeroDepartureTrecho4; 
+								innerFlightsT4["aeroDescDeparture"] = aeroDescDepartureTrecho4[0]; 
+								innerFlightsT4["aeroArrival"] = aeroArrivalTrecho4; 
+								innerFlightsT4["aeroDescArrival"] = aeroDescArrivalTrecho4[0]; 
+								innerFlightsT4["checkin"] = checkinTrecho4; 
+								innerFlightsT4["textType"] = textTypeTrecho4; 
+								innerFlightsT4["iconType"] = iconTypeTrecho4; 
+								innerFlightsT4["companhia"] = item.validatingBy.name;
+								for(var x = 0; x < logos.length; x++){
+									if(item.validatingBy.iata == logos[x]["cod_companhia"]){
+										innerFlightsT4["logoCompanhia"] = logos[x]["img_companhia"];   
+									}
+								} 
+								innerFlightsT4["rateToken"] = flight4.rateToken;
+								innerFlightsT4["leg"] = flight4.legs;
+								innerFlightsT4["horaIda"] = moment(flight4.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								innerFlightsT4["horaVolta"] = moment(flight4.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								if(flight4.numberOfStops == 0){
+									var stops = 'Direto';
+								}else if(flight4.numberOfStops == 1){
+									var stops = '1 parada';
+								}else if(flight4.numberOfStops == 2){
+									var stops = '2 paradas';
 								}
-							} 
-							innerFlightsT5["rateToken"] = flight5.rateToken;
-							innerFlightsT5["leg"] = flight5.legs;
-							innerFlightsT5["horaIda"] = moment(flight5.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							innerFlightsT5["horaVolta"] = moment(flight5.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							if(flight5.numberOfStops == 0){
-								var stops = 'Direto';
-							}else if(flight5.numberOfStops == 1){
-								var stops = '1 parada';
-							}else if(flight5.numberOfStops == 2){
-								var stops = '2 paradas';
-							}
-							innerFlightsT5["paradas"] = stops; 
-							innerFlightsT5["duracao"] = getTimeFromMins(flight5.duration);
-							if(flight5.fareProfile.baggage.isIncluded){
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
-							}else{ 
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
-							}
-							innerFlightsT5["bagagem"] = baggage;
+								innerFlightsT4["paradas"] = stops; 
+								innerFlightsT4["duracao"] = getTimeFromMins(flight4.duration);
+								if(flight4.fareProfile.baggage.isIncluded){
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
+								}else{ 
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
+								}
+								innerFlightsT4["bagagem"] = baggage;
 
-							innerObj["flightsT5"].push(innerFlightsT5); 
-						}
-					});
+								innerObj["flightsT4"].push(innerFlightsT4); 
+							}
+						});
 
-				} 
-			/* FIM QUINTA ROTA */
+					} 
+				/* FIM QUARTA ROTA */
+
+				/* QUINTA ROTA */  
+					if(localStorage.getItem("DESTINO_FLIGHT_TRECHO5") != null){ 
+						innerObj["flightsT5"] = [];
+					 
+						var aeroDepartureTrecho5  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO5");
+						var aeroDescDepartureTrecho5  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO5").split(",");
+
+						var aeroArrivalTrecho5  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO5");
+						var aeroDescArrivalTrecho5  = localStorage.getItem("DESTINO_FLIGHT_TRECHO5").split(",");
+
+						var checkinTrecho5 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO5"), 'DD-MM-YYYY').format("LL");
+
+						var textTypeTrecho5  = 'TRECHO 5';
+						var iconTypeTrecho5  = 'fas fa-plane-arrival'; 
+
+						jQuery(item.segments).each(function(f5, flight5) { 
+
+				    		var innerFlightsT5 = {}; 
+							if(flight5.routeRPH == 4){ 
+								innerFlightsT5["id"] = f5;   
+								innerFlightsT5["segment"] = flight5;     
+								innerFlightsT5["aeroDeparture"] = aeroDepartureTrecho5; 
+								innerFlightsT5["aeroDescDeparture"] = aeroDescDepartureTrecho5[0]; 
+								innerFlightsT5["aeroArrival"] = aeroArrivalTrecho5; 
+								innerFlightsT5["aeroDescArrival"] = aeroDescArrivalTrecho5[0]; 
+								innerFlightsT5["checkin"] = checkinTrecho5; 
+								innerFlightsT5["textType"] = textTypeTrecho5; 
+								innerFlightsT5["iconType"] = iconTypeTrecho5; 
+								innerFlightsT5["companhia"] = item.validatingBy.name;
+								for(var x = 0; x < logos.length; x++){
+									if(item.validatingBy.iata == logos[x]["cod_companhia"]){
+										innerFlightsT5["logoCompanhia"] = logos[x]["img_companhia"];   
+									}
+								} 
+								innerFlightsT5["rateToken"] = flight5.rateToken;
+								innerFlightsT5["leg"] = flight5.legs;
+								innerFlightsT5["horaIda"] = moment(flight5.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								innerFlightsT5["horaVolta"] = moment(flight5.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								if(flight5.numberOfStops == 0){
+									var stops = 'Direto';
+								}else if(flight5.numberOfStops == 1){
+									var stops = '1 parada';
+								}else if(flight5.numberOfStops == 2){
+									var stops = '2 paradas';
+								}
+								innerFlightsT5["paradas"] = stops; 
+								innerFlightsT5["duracao"] = getTimeFromMins(flight5.duration);
+								if(flight5.fareProfile.baggage.isIncluded){
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
+								}else{ 
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
+								}
+								innerFlightsT5["bagagem"] = baggage;
+
+								innerObj["flightsT5"].push(innerFlightsT5); 
+							}
+						});
+
+					} 
+				/* FIM QUINTA ROTA */
+			}
 
 			dataJson.push(innerObj); 
 		}
@@ -1209,188 +1211,190 @@ function filter_flights(type = null){
 				} 
 			/* FIM SEGUNDA ROTA */
 
-			/* TERCEIRA ROTA */  
-				if(localStorage.getItem("DESTINO_FLIGHT_TRECHO3") != null){ 
-					innerObj["flightsT3"] = [];
-				 
-					var aeroDepartureTrecho3  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO3");
-					var aeroDescDepartureTrecho3  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO3").split(",");
+			if(localStorage.getItem("TYPE_FLIGHT") == 3){
+				/* TERCEIRA ROTA */  
+					if(localStorage.getItem("DESTINO_FLIGHT_TRECHO3") != null){ 
+						innerObj["flightsT3"] = [];
+					 
+						var aeroDepartureTrecho3  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO3");
+						var aeroDescDepartureTrecho3  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO3").split(",");
 
-					var aeroArrivalTrecho3  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO3");
-					var aeroDescArrivalTrecho3  = localStorage.getItem("DESTINO_FLIGHT_TRECHO3").split(",");
+						var aeroArrivalTrecho3  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO3");
+						var aeroDescArrivalTrecho3  = localStorage.getItem("DESTINO_FLIGHT_TRECHO3").split(",");
 
-					var checkinTrecho3 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO3"), 'DD-MM-YYYY').format("LL");
+						var checkinTrecho3 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO3"), 'DD-MM-YYYY').format("LL");
 
-					var textTypeTrecho3  = 'TRECHO 3';
-					var iconTypeTrecho3  = 'fas fa-plane-arrival'; 
+						var textTypeTrecho3  = 'TRECHO 3';
+						var iconTypeTrecho3  = 'fas fa-plane-arrival'; 
 
-					jQuery(item.segments).each(function(f3, flight3) { 
+						jQuery(item.segments).each(function(f3, flight3) { 
 
-			    		var innerFlightsT3 = {}; 
-						if(flight3.routeRPH == 2){     
-							innerFlightsT3["id"] = f3;    
-							innerFlightsT3["segment"] = flight3;
-							innerFlightsT3["aeroDeparture"] = aeroDepartureTrecho3; 
-							innerFlightsT3["aeroDescDeparture"] = aeroDescDepartureTrecho3[0]; 
-							innerFlightsT3["aeroArrival"] = aeroArrivalTrecho3; 
-							innerFlightsT3["aeroDescArrival"] = aeroDescArrivalTrecho3[0]; 
-							innerFlightsT3["checkin"] = checkinTrecho3; 
-							innerFlightsT3["textType"] = textTypeTrecho3; 
-							innerFlightsT3["iconType"] = iconTypeTrecho3; 
-							innerFlightsT3["companhia"] = item.validatingBy.name;
-							for(var x = 0; x < logos.length; x++){
-								if(item.validatingBy.iata == logos[x]["cod_companhia"]){
-									innerFlightsT3["logoCompanhia"] = logos[x]["img_companhia"];   
+				    		var innerFlightsT3 = {}; 
+							if(flight3.routeRPH == 2){     
+								innerFlightsT3["id"] = f3;    
+								innerFlightsT3["segment"] = flight3;
+								innerFlightsT3["aeroDeparture"] = aeroDepartureTrecho3; 
+								innerFlightsT3["aeroDescDeparture"] = aeroDescDepartureTrecho3[0]; 
+								innerFlightsT3["aeroArrival"] = aeroArrivalTrecho3; 
+								innerFlightsT3["aeroDescArrival"] = aeroDescArrivalTrecho3[0]; 
+								innerFlightsT3["checkin"] = checkinTrecho3; 
+								innerFlightsT3["textType"] = textTypeTrecho3; 
+								innerFlightsT3["iconType"] = iconTypeTrecho3; 
+								innerFlightsT3["companhia"] = item.validatingBy.name;
+								for(var x = 0; x < logos.length; x++){
+									if(item.validatingBy.iata == logos[x]["cod_companhia"]){
+										innerFlightsT3["logoCompanhia"] = logos[x]["img_companhia"];   
+									}
+								} 
+								innerFlightsT3["rateToken"] = flight3.rateToken;
+								innerFlightsT3["leg"] = flight3.legs;
+								innerFlightsT3["horaIda"] = moment(flight3.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								innerFlightsT3["horaVolta"] = moment(flight3.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								if(flight3.numberOfStops == 0){
+									var stops = 'Direto';
+								}else if(flight3.numberOfStops == 1){
+									var stops = '1 parada';
+								}else if(flight3.numberOfStops == 2){
+									var stops = '2 paradas';
 								}
-							} 
-							innerFlightsT3["rateToken"] = flight3.rateToken;
-							innerFlightsT3["leg"] = flight3.legs;
-							innerFlightsT3["horaIda"] = moment(flight3.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							innerFlightsT3["horaVolta"] = moment(flight3.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							if(flight3.numberOfStops == 0){
-								var stops = 'Direto';
-							}else if(flight3.numberOfStops == 1){
-								var stops = '1 parada';
-							}else if(flight3.numberOfStops == 2){
-								var stops = '2 paradas';
-							}
-							innerFlightsT3["paradas"] = stops; 
-							innerFlightsT3["duracao"] = getTimeFromMins(flight3.duration);
-							if(flight3.fareProfile.baggage.isIncluded){
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
-							}else{ 
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
-							}
-							innerFlightsT3["bagagem"] = baggage;
-
-							innerObj["flightsT3"].push(innerFlightsT3); 
-						}
-					});
-
-				} 
-			/* FIM TERCEIRA ROTA */
-
-			/* QUARTA ROTA */  
-				if(localStorage.getItem("DESTINO_FLIGHT_TRECHO4") != null){ 
-					innerObj["flightsT4"] = [];
-				 
-					var aeroDepartureTrecho4  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO4");
-					var aeroDescDepartureTrecho4  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO4").split(",");
-
-					var aeroArrivalTrecho4  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO4");
-					var aeroDescArrivalTrecho4  = localStorage.getItem("DESTINO_FLIGHT_TRECHO4").split(",");
-
-					var checkinTrecho4 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO4"), 'DD-MM-YYYY').format("LL");
-
-					var textTypeTrecho4  = 'TRECHO 4';
-					var iconTypeTrecho4  = 'fas fa-plane-departure'; 
-
-					jQuery(item.segments).each(function(f4, flight4) { 
-
-			    		var innerFlightsT4 = {}; 
-						if(flight4.routeRPH == 3){     
-							innerFlightsT4["id"] = f4;    
-							innerFlightsT4["segment"] = flight4;
-							innerFlightsT4["aeroDeparture"] = aeroDepartureTrecho4; 
-							innerFlightsT4["aeroDescDeparture"] = aeroDescDepartureTrecho4[0]; 
-							innerFlightsT4["aeroArrival"] = aeroArrivalTrecho4; 
-							innerFlightsT4["aeroDescArrival"] = aeroDescArrivalTrecho4[0]; 
-							innerFlightsT4["checkin"] = checkinTrecho4; 
-							innerFlightsT4["textType"] = textTypeTrecho4; 
-							innerFlightsT4["iconType"] = iconTypeTrecho4; 
-							innerFlightsT4["companhia"] = item.validatingBy.name;
-							for(var x = 0; x < logos.length; x++){
-								if(item.validatingBy.iata == logos[x]["cod_companhia"]){
-									innerFlightsT4["logoCompanhia"] = logos[x]["img_companhia"];   
+								innerFlightsT3["paradas"] = stops; 
+								innerFlightsT3["duracao"] = getTimeFromMins(flight3.duration);
+								if(flight3.fareProfile.baggage.isIncluded){
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
+								}else{ 
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
 								}
-							} 
-							innerFlightsT4["rateToken"] = flight4.rateToken;
-							innerFlightsT4["leg"] = flight4.legs;
-							innerFlightsT4["horaIda"] = moment(flight4.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							innerFlightsT4["horaVolta"] = moment(flight4.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							if(flight4.numberOfStops == 0){
-								var stops = 'Direto';
-							}else if(flight4.numberOfStops == 1){
-								var stops = '1 parada';
-							}else if(flight4.numberOfStops == 2){
-								var stops = '2 paradas';
+								innerFlightsT3["bagagem"] = baggage;
+
+								innerObj["flightsT3"].push(innerFlightsT3); 
 							}
-							innerFlightsT4["paradas"] = stops; 
-							innerFlightsT4["duracao"] = getTimeFromMins(flight4.duration);
-							if(flight4.fareProfile.baggage.isIncluded){
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
-							}else{ 
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
-							}
-							innerFlightsT4["bagagem"] = baggage;
+						});
 
-							innerObj["flightsT4"].push(innerFlightsT4); 
-						}
-					});
+					} 
+				/* FIM TERCEIRA ROTA */
 
-				} 
-			/* FIM QUARTA ROTA */
+				/* QUARTA ROTA */  
+					if(localStorage.getItem("DESTINO_FLIGHT_TRECHO4") != null){ 
+						innerObj["flightsT4"] = [];
+					 
+						var aeroDepartureTrecho4  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO4");
+						var aeroDescDepartureTrecho4  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO4").split(",");
 
-			/* QUINTA ROTA */  
-				if(localStorage.getItem("DESTINO_FLIGHT_TRECHO5") != null){ 
-					innerObj["flightsT5"] = [];
-				 
-					var aeroDepartureTrecho5  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO5");
-					var aeroDescDepartureTrecho5  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO5").split(",");
+						var aeroArrivalTrecho4  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO4");
+						var aeroDescArrivalTrecho4  = localStorage.getItem("DESTINO_FLIGHT_TRECHO4").split(",");
 
-					var aeroArrivalTrecho5  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO5");
-					var aeroDescArrivalTrecho5  = localStorage.getItem("DESTINO_FLIGHT_TRECHO5").split(",");
+						var checkinTrecho4 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO4"), 'DD-MM-YYYY').format("LL");
 
-					var checkinTrecho5 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO5"), 'DD-MM-YYYY').format("LL");
+						var textTypeTrecho4  = 'TRECHO 4';
+						var iconTypeTrecho4  = 'fas fa-plane-departure'; 
 
-					var textTypeTrecho5  = 'TRECHO 5';
-					var iconTypeTrecho5  = 'fas fa-plane-arrival'; 
+						jQuery(item.segments).each(function(f4, flight4) { 
 
-					jQuery(item.segments).each(function(f5, flight5) { 
-
-			    		var innerFlightsT5 = {}; 
-						if(flight5.routeRPH == 4){ 
-							innerFlightsT5["id"] = f5;        
-							innerFlightsT5["segment"] = flight5;
-							innerFlightsT5["aeroDeparture"] = aeroDepartureTrecho5; 
-							innerFlightsT5["aeroDescDeparture"] = aeroDescDepartureTrecho5[0]; 
-							innerFlightsT5["aeroArrival"] = aeroArrivalTrecho5; 
-							innerFlightsT5["aeroDescArrival"] = aeroDescArrivalTrecho5[0]; 
-							innerFlightsT5["checkin"] = checkinTrecho5; 
-							innerFlightsT5["textType"] = textTypeTrecho5; 
-							innerFlightsT5["iconType"] = iconTypeTrecho5; 
-							innerFlightsT5["companhia"] = item.validatingBy.name; 
-							for(var x = 0; x < logos.length; x++){
-								if(item.validatingBy.iata == logos[x]["cod_companhia"]){
-									innerFlightsT5["logoCompanhia"] = logos[x]["img_companhia"];   
+				    		var innerFlightsT4 = {}; 
+							if(flight4.routeRPH == 3){     
+								innerFlightsT4["id"] = f4;    
+								innerFlightsT4["segment"] = flight4;
+								innerFlightsT4["aeroDeparture"] = aeroDepartureTrecho4; 
+								innerFlightsT4["aeroDescDeparture"] = aeroDescDepartureTrecho4[0]; 
+								innerFlightsT4["aeroArrival"] = aeroArrivalTrecho4; 
+								innerFlightsT4["aeroDescArrival"] = aeroDescArrivalTrecho4[0]; 
+								innerFlightsT4["checkin"] = checkinTrecho4; 
+								innerFlightsT4["textType"] = textTypeTrecho4; 
+								innerFlightsT4["iconType"] = iconTypeTrecho4; 
+								innerFlightsT4["companhia"] = item.validatingBy.name;
+								for(var x = 0; x < logos.length; x++){
+									if(item.validatingBy.iata == logos[x]["cod_companhia"]){
+										innerFlightsT4["logoCompanhia"] = logos[x]["img_companhia"];   
+									}
+								} 
+								innerFlightsT4["rateToken"] = flight4.rateToken;
+								innerFlightsT4["leg"] = flight4.legs;
+								innerFlightsT4["horaIda"] = moment(flight4.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								innerFlightsT4["horaVolta"] = moment(flight4.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								if(flight4.numberOfStops == 0){
+									var stops = 'Direto';
+								}else if(flight4.numberOfStops == 1){
+									var stops = '1 parada';
+								}else if(flight4.numberOfStops == 2){
+									var stops = '2 paradas';
 								}
-							} 
-							innerFlightsT5["rateToken"] = flight5.rateToken;
-							innerFlightsT5["leg"] = flight5.legs;
-							innerFlightsT5["horaIda"] = moment(flight5.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							innerFlightsT5["horaVolta"] = moment(flight5.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
-							if(flight5.numberOfStops == 0){
-								var stops = 'Direto';
-							}else if(flight5.numberOfStops == 1){
-								var stops = '1 parada';
-							}else if(flight5.numberOfStops == 2){
-								var stops = '2 paradas';
-							}
-							innerFlightsT5["paradas"] = stops; 
-							innerFlightsT5["duracao"] = getTimeFromMins(flight5.duration);
-							if(flight5.fareProfile.baggage.isIncluded){
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
-							}else{ 
-								var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
-							}
-							innerFlightsT5["bagagem"] = baggage;
+								innerFlightsT4["paradas"] = stops; 
+								innerFlightsT4["duracao"] = getTimeFromMins(flight4.duration);
+								if(flight4.fareProfile.baggage.isIncluded){
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
+								}else{ 
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
+								}
+								innerFlightsT4["bagagem"] = baggage;
 
-							innerObj["flightsT5"].push(innerFlightsT5); 
-						}
-					});
+								innerObj["flightsT4"].push(innerFlightsT4); 
+							}
+						});
 
-				} 
-			/* FIM QUINTA ROTA */
+					} 
+				/* FIM QUARTA ROTA */
+
+				/* QUINTA ROTA */  
+					if(localStorage.getItem("DESTINO_FLIGHT_TRECHO5") != null){ 
+						innerObj["flightsT5"] = [];
+					 
+						var aeroDepartureTrecho5  = localStorage.getItem("ID_ORIGEM_FLIGHT_TRECHO5");
+						var aeroDescDepartureTrecho5  = localStorage.getItem("ORIGEM_FLIGHT_TRECHO5").split(",");
+
+						var aeroArrivalTrecho5  = localStorage.getItem("ID_DESTINO_FLIGHT_TRECHO5");
+						var aeroDescArrivalTrecho5  = localStorage.getItem("DESTINO_FLIGHT_TRECHO5").split(",");
+
+						var checkinTrecho5 = moment(localStorage.getItem("DATE_CHECKIN_TRECHO5"), 'DD-MM-YYYY').format("LL");
+
+						var textTypeTrecho5  = 'TRECHO 5';
+						var iconTypeTrecho5  = 'fas fa-plane-arrival'; 
+
+						jQuery(item.segments).each(function(f5, flight5) { 
+
+				    		var innerFlightsT5 = {}; 
+							if(flight5.routeRPH == 4){ 
+								innerFlightsT5["id"] = f5;        
+								innerFlightsT5["segment"] = flight5;
+								innerFlightsT5["aeroDeparture"] = aeroDepartureTrecho5; 
+								innerFlightsT5["aeroDescDeparture"] = aeroDescDepartureTrecho5[0]; 
+								innerFlightsT5["aeroArrival"] = aeroArrivalTrecho5; 
+								innerFlightsT5["aeroDescArrival"] = aeroDescArrivalTrecho5[0]; 
+								innerFlightsT5["checkin"] = checkinTrecho5; 
+								innerFlightsT5["textType"] = textTypeTrecho5; 
+								innerFlightsT5["iconType"] = iconTypeTrecho5; 
+								innerFlightsT5["companhia"] = item.validatingBy.name; 
+								for(var x = 0; x < logos.length; x++){
+									if(item.validatingBy.iata == logos[x]["cod_companhia"]){
+										innerFlightsT5["logoCompanhia"] = logos[x]["img_companhia"];   
+									}
+								} 
+								innerFlightsT5["rateToken"] = flight5.rateToken;
+								innerFlightsT5["leg"] = flight5.legs;
+								innerFlightsT5["horaIda"] = moment(flight5.departureDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								innerFlightsT5["horaVolta"] = moment(flight5.arrivalDate, 'YYYY-MM-DD HH:mm:ss').format("HH:mm");
+								if(flight5.numberOfStops == 0){
+									var stops = 'Direto';
+								}else if(flight5.numberOfStops == 1){
+									var stops = '1 parada';
+								}else if(flight5.numberOfStops == 2){
+									var stops = '2 paradas';
+								}
+								innerFlightsT5["paradas"] = stops; 
+								innerFlightsT5["duracao"] = getTimeFromMins(flight5.duration);
+								if(flight5.fareProfile.baggage.isIncluded){
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart"></i>';
+								}else{ 
+									var baggage = '<i aria-hidden="true" class="fas fa-luggage-cart" style="color: #cfcfcf;"></i>';
+								}
+								innerFlightsT5["bagagem"] = baggage;
+
+								innerObj["flightsT5"].push(innerFlightsT5); 
+							}
+						});
+
+					} 
+				/* FIM QUINTA ROTA */
+			}
 
 			dataJson.push(innerObj); 
 		} 
@@ -1511,7 +1515,7 @@ function list_results_flights(contador_prox, contador_prev){
 				                                html += '<div class="elementor-widget-container">';
 				                                    html += '<div class="elementor-icon-wrapper">';
 				                                        html += '<div class="elementor-icon">';
-				                                            html += '<input type="radio" name="flightTrecho1" id="flightTrecho1" value="'+voo1.id+'" onclick="setDataFlight('+i+', '+v1+', \'flightsT1\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+				                                            html += '<input type="radio" name="flightTrecho1_'+i+'" id="flightTrecho1_'+i+'_'+v1+'" value="'+voo1.id+'" onclick="setDataFlight('+i+', '+v1+', \'flightsT1\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
 				                                        html += '</div>';
 				                                    html += '</div>';
 				                                html += '</div>';
@@ -1689,7 +1693,7 @@ function list_results_flights(contador_prox, contador_prev){
 					                                html += '<div class="elementor-widget-container">';
 					                                    html += '<div class="elementor-icon-wrapper">';
 					                                        html += '<div class="elementor-icon">';
-				                                            	html += '<input type="radio" name="flightTrecho2" id="flightTrecho2" value="'+voo2.id+'" onclick="setDataFlight('+i+', '+v2+', \'flightsT2\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+				                                            	html += '<input type="radio" name="flightTrecho2_'+i+'" id="flightTrecho2" value="'+voo2.id+'" onclick="setDataFlight('+i+', '+v2+', \'flightsT2\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
 					                                        html += '</div>';
 					                                    html += '</div>';
 					                                html += '</div>';
@@ -1788,544 +1792,548 @@ function list_results_flights(contador_prox, contador_prev){
 				            });
 
 				    	/* FIM SEGUNDA ROTA */
-				    }
+				    } 
 
-			    	if(localStorage.getItem("DESTINO_FLIGHT_TRECHO3") != null){
-				    	/* TERCEIRA ROTA */
-				    		html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="bdb8934" data-element_type="section">';
-				                html += '<div class="elementor-container elementor-column-gap-default">';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-694ffca" data-id="694ffca" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-487a01e elementor-position-left elementor-view-default elementor-mobile-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="487a01e" data-element_type="widget" data-widget_type="icon-box.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css" />';
-				                                    html += '<div class="elementor-icon-box-wrapper">';
-				                                        html += '<div class="elementor-icon-box-icon">';
-				                                            html += '<span class="elementor-icon elementor-animation-"> <i aria-hidden="true" class="'+item.flightsT3[0].iconType+'"></i> </span>';
-				                                        html += '</div>';
-				                                        html += '<div class="elementor-icon-box-content">';
-				                                            html += '<h3 class="elementor-icon-box-title" style="    margin-top: 5px;">';
-				                                                html += '<span> '+item.flightsT3[0].textType+' </span>';
-				                                            html += '</h3>';
-				                                        html += '</div>';
-				                                    html += '</div>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-a6937f4 elementor-widget elementor-widget-heading" data-id="a6937f4" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<style>.elementor-heading-title {padding: 0;margin: 0;line-height: 1;}.elementor-widget-heading .elementor-heading-title[class*="elementor-size-"] > a {color: inherit;font-size: inherit;line-height: inherit;}.elementor-widget-heading .elementor-heading-title.elementor-size-small {font-size: 15px;}.elementor-widget-heading .elementor-heading-title.elementor-size-medium {font-size: 19px;}.elementor-widget-heading .elementor-heading-title.elementor-size-large {font-size: 29px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xl {font-size: 39px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl {font-size: 59px;}</style>';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].checkin+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-056e108" data-id="056e108" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-ab0e110 elementor-widget elementor-widget-heading" data-id="ab0e110" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroDeparture+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-891ac14 elementor-widget elementor-widget-heading" data-id="891ac14" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroDescDeparture+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-95bdfa3" data-id="95bdfa3" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-a06688c elementor-widget elementor-widget-heading" data-id="a06688c" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroArrival+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-6767e1e elementor-widget elementor-widget-heading" data-id="6767e1e" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroDescArrival+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-94783ca elementor-hidden-mobile" data-id="94783ca" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-5ae3cb0 elementor-widget elementor-widget-heading" data-id="5ae3cb0" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">Bagagem</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                html += '</div>';
-				            html += '</section>';
+					if(localStorage.getItem("TYPE_FLIGHT") == 3){
 
-				            jQuery(item.flightsT3).each(function(v3, voo3) { 
-				            	html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-3eab11e elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="3eab11e" data-element_type="section" >';
+				    	if(localStorage.getItem("DESTINO_FLIGHT_TRECHO3") != null){
+					    	/* TERCEIRA ROTA */
+					    		html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="bdb8934" data-element_type="section">';
 					                html += '<div class="elementor-container elementor-column-gap-default">';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-121ea31" data-id="121ea31" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-694ffca" data-id="694ffca" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-04fc0e6 elementor-view-default elementor-widget elementor-widget-icon" data-id="04fc0e6" data-element_type="widget" data-widget_type="icon.default">';
+					                            html += '<div class="elementor-element elementor-element-487a01e elementor-position-left elementor-view-default elementor-mobile-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="487a01e" data-element_type="widget" data-widget_type="icon-box.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<div class="elementor-icon-wrapper">';
-					                                        html += '<div class="elementor-icon">';
-				                                            	html += '<input type="radio" name="flightTrecho3" id="flightTrecho3" value="'+voo3.id+'" onclick="setDataFlight('+i+', '+v3+', \'flightsT3\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+					                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css" />';
+					                                    html += '<div class="elementor-icon-box-wrapper">';
+					                                        html += '<div class="elementor-icon-box-icon">';
+					                                            html += '<span class="elementor-icon elementor-animation-"> <i aria-hidden="true" class="'+item.flightsT3[0].iconType+'"></i> </span>';
+					                                        html += '</div>';
+					                                        html += '<div class="elementor-icon-box-content">';
+					                                            html += '<h3 class="elementor-icon-box-title" style="    margin-top: 5px;">';
+					                                                html += '<span> '+item.flightsT3[0].textType+' </span>';
+					                                            html += '</h3>';
 					                                        html += '</div>';
 					                                    html += '</div>';
 					                                html += '</div>';
 					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-145eadd" data-id="145eadd" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-f1d001a elementor-position-left elementor-vertical-align-top elementor-widget elementor-widget-image-box" data-id="f1d001a" data-element_type="widget" data-widget_type="image-box.default" >';
+					                            html += '<div class="elementor-element elementor-element-a6937f4 elementor-widget elementor-widget-heading" data-id="a6937f4" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<style> .elementor-widget-image-box .elementor-image-box-content {width: 100%;}@media (min-width: 768px) {.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper, .elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {display: flex;}.elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {text-align: right;flex-direction: row-reverse;}.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper {text-align: left;flex-direction: row;}.elementor-widget-image-box.elementor-position-top .elementor-image-box-img {margin: auto;}.elementor-widget-image-box.elementor-vertical-align-top .elementor-image-box-wrapper {align-items: flex-start;}.elementor-widget-image-box.elementor-vertical-align-middle .elementor-image-box-wrapper {align-items: center;}.elementor-widget-image-box.elementor-vertical-align-bottom .elementor-image-box-wrapper {align-items: flex-end;}}@media (max-width: 767px) {.elementor-widget-image-box .elementor-image-box-img {margin-left: auto !important;margin-right: auto !important;margin-bottom: 15px;}}.elementor-widget-image-box .elementor-image-box-img {display: inline-block;}.elementor-widget-image-box .elementor-image-box-title a {color: inherit;}.elementor-widget-image-box .elementor-image-box-wrapper {text-align: center;}.elementor-widget-image-box .elementor-image-box-description {margin: 0;}</style>';
-					                                    html += '<div class="elementor-image-box-wrapper">';
-					                                        html += '<figure class="elementor-image-box-img">';
-					                                            html += '<img decoding="async" width="25" height="25" src="'+voo3.logoCompanhia+'" class="attachment-full size-full wp-image-1784" alt="" loading="lazy" />';
-					                                        html += '</figure>';
-					                                        html += '<div class="elementor-image-box-content"><h3 class="elementor-image-box-title">'+voo3.companhia+'</h3></div>';
-					                                    html += '</div>';
+					                                    html += '<style>.elementor-heading-title {padding: 0;margin: 0;line-height: 1;}.elementor-widget-heading .elementor-heading-title[class*="elementor-size-"] > a {color: inherit;font-size: inherit;line-height: inherit;}.elementor-widget-heading .elementor-heading-title.elementor-size-small {font-size: 15px;}.elementor-widget-heading .elementor-heading-title.elementor-size-medium {font-size: 19px;}.elementor-widget-heading .elementor-heading-title.elementor-size-large {font-size: 29px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xl {font-size: 39px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl {font-size: 59px;}</style>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].checkin+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-f7a6913" data-id="f7a6913" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-056e108" data-id="056e108" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-d1a8a7a elementor-widget elementor-widget-heading" data-id="d1a8a7a" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-ab0e110 elementor-widget elementor-widget-heading" data-id="ab0e110" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.horaIda+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroDeparture+'</h2>';
+					                                html += '</div>';
+					                            html += '</div>';
+					                            html += '<div class="elementor-element elementor-element-891ac14 elementor-widget elementor-widget-heading" data-id="891ac14" data-element_type="widget" data-widget_type="heading.default">';
+					                                html += '<div class="elementor-widget-container">';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroDescDeparture+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-0f05fdb" data-id="0f05fdb" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-95bdfa3" data-id="95bdfa3" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-98d3060 elementor-widget elementor-widget-heading" data-id="98d3060" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-a06688c elementor-widget elementor-widget-heading" data-id="a06688c" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.paradas+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroArrival+'</h2>';
 					                                html += '</div>';
-					                            html += '</div>'; 
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-acb4588" data-id="acb4588" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-50bc46f elementor-widget elementor-widget-heading" data-id="50bc46f" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '</div>';
+					                            html += '<div class="elementor-element elementor-element-6767e1e elementor-widget elementor-widget-heading" data-id="6767e1e" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.horaVolta+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT3[0].aeroDescArrival+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-9a72b81" data-id="9a72b81" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-94783ca elementor-hidden-mobile" data-id="94783ca" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-087e430 elementor-widget elementor-widget-heading" data-id="087e430" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-5ae3cb0 elementor-widget elementor-widget-heading" data-id="5ae3cb0" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.duracao+'</h2>';
-					                                html += '</div>';
-					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-2d9f7a6" data-id="2d9f7a6" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-e64596c elementor-icon-list--layout-inline elementor-align-center elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="e64596c" data-element_type="widget"  data-widget_type="icon-list.default" >';
-					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css" />';
-					                                    html += '<ul class="elementor-icon-list-items elementor-inline-items">';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-shopping-bag"></i> </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-suitcase-rolling"></i> </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> '+voo3.bagagem+' </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                    html += '</ul>';
-					                                html += '</div>';
-					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-ba41d76" data-id="ba41d76" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-83e1053 elementor-view-default elementor-widget elementor-widget-icon" data-id="83e1053" data-element_type="widget" data-widget_type="icon.default">';
-					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<div class="elementor-icon-wrapper">';
-					                                        html += '<div class="elementor-icon">';
-					                                            html += '<i aria-hidden="true" class="fas fa-chevron-down" onclick="getDataFlight('+i+', '+v3+', \'flightsT3\')" style="cursor:pointer"></i>';
-					                                        html += '</div>';
-					                                    html += '</div>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">Bagagem</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
 					                html += '</div>';
-					            html += '</section> ';
-				            });
+					            html += '</section>';
 
-				    	/* FIM TERCEIRA ROTA */
-				    }
+					            jQuery(item.flightsT3).each(function(v3, voo3) { 
+					            	html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-3eab11e elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="3eab11e" data-element_type="section" >';
+						                html += '<div class="elementor-container elementor-column-gap-default">';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-121ea31" data-id="121ea31" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-04fc0e6 elementor-view-default elementor-widget elementor-widget-icon" data-id="04fc0e6" data-element_type="widget" data-widget_type="icon.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<div class="elementor-icon-wrapper">';
+						                                        html += '<div class="elementor-icon">';
+					                                            	html += '<input type="radio" name="flightTrecho3_'+i+'" id="flightTrecho3" value="'+voo3.id+'" onclick="setDataFlight('+i+', '+v3+', \'flightsT3\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+						                                        html += '</div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-145eadd" data-id="145eadd" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-f1d001a elementor-position-left elementor-vertical-align-top elementor-widget elementor-widget-image-box" data-id="f1d001a" data-element_type="widget" data-widget_type="image-box.default" >';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<style> .elementor-widget-image-box .elementor-image-box-content {width: 100%;}@media (min-width: 768px) {.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper, .elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {display: flex;}.elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {text-align: right;flex-direction: row-reverse;}.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper {text-align: left;flex-direction: row;}.elementor-widget-image-box.elementor-position-top .elementor-image-box-img {margin: auto;}.elementor-widget-image-box.elementor-vertical-align-top .elementor-image-box-wrapper {align-items: flex-start;}.elementor-widget-image-box.elementor-vertical-align-middle .elementor-image-box-wrapper {align-items: center;}.elementor-widget-image-box.elementor-vertical-align-bottom .elementor-image-box-wrapper {align-items: flex-end;}}@media (max-width: 767px) {.elementor-widget-image-box .elementor-image-box-img {margin-left: auto !important;margin-right: auto !important;margin-bottom: 15px;}}.elementor-widget-image-box .elementor-image-box-img {display: inline-block;}.elementor-widget-image-box .elementor-image-box-title a {color: inherit;}.elementor-widget-image-box .elementor-image-box-wrapper {text-align: center;}.elementor-widget-image-box .elementor-image-box-description {margin: 0;}</style>';
+						                                    html += '<div class="elementor-image-box-wrapper">';
+						                                        html += '<figure class="elementor-image-box-img">';
+						                                            html += '<img decoding="async" width="25" height="25" src="'+voo3.logoCompanhia+'" class="attachment-full size-full wp-image-1784" alt="" loading="lazy" />';
+						                                        html += '</figure>';
+						                                        html += '<div class="elementor-image-box-content"><h3 class="elementor-image-box-title">'+voo3.companhia+'</h3></div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-f7a6913" data-id="f7a6913" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-d1a8a7a elementor-widget elementor-widget-heading" data-id="d1a8a7a" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.horaIda+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-0f05fdb" data-id="0f05fdb" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-98d3060 elementor-widget elementor-widget-heading" data-id="98d3060" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.paradas+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>'; 
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-acb4588" data-id="acb4588" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-50bc46f elementor-widget elementor-widget-heading" data-id="50bc46f" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.horaVolta+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-9a72b81" data-id="9a72b81" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-087e430 elementor-widget elementor-widget-heading" data-id="087e430" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo3.duracao+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-2d9f7a6" data-id="2d9f7a6" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-e64596c elementor-icon-list--layout-inline elementor-align-center elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="e64596c" data-element_type="widget"  data-widget_type="icon-list.default" >';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css" />';
+						                                    html += '<ul class="elementor-icon-list-items elementor-inline-items">';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-shopping-bag"></i> </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-suitcase-rolling"></i> </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> '+voo3.bagagem+' </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                    html += '</ul>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-ba41d76" data-id="ba41d76" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-83e1053 elementor-view-default elementor-widget elementor-widget-icon" data-id="83e1053" data-element_type="widget" data-widget_type="icon.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<div class="elementor-icon-wrapper">';
+						                                        html += '<div class="elementor-icon">';
+						                                            html += '<i aria-hidden="true" class="fas fa-chevron-down" onclick="getDataFlight('+i+', '+v3+', \'flightsT3\')" style="cursor:pointer"></i>';
+						                                        html += '</div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                html += '</div>';
+						            html += '</section> ';
+					            });
 
-			    	if(localStorage.getItem("DESTINO_FLIGHT_TRECHO4") != null){
-				    	/* QUARTA ROTA */
-				    		html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="bdb8934" data-element_type="section">';
-				                html += '<div class="elementor-container elementor-column-gap-default">';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-694ffca" data-id="694ffca" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-487a01e elementor-position-left elementor-view-default elementor-mobile-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="487a01e" data-element_type="widget" data-widget_type="icon-box.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css" />';
-				                                    html += '<div class="elementor-icon-box-wrapper">';
-				                                        html += '<div class="elementor-icon-box-icon">';
-				                                            html += '<span class="elementor-icon elementor-animation-"> <i aria-hidden="true" class="'+item.flightsT4[0].iconType+'"></i> </span>';
-				                                        html += '</div>';
-				                                        html += '<div class="elementor-icon-box-content">';
-				                                            html += '<h3 class="elementor-icon-box-title" style="    margin-top: 5px;">';
-				                                                html += '<span> '+item.flightsT4[0].textType+' </span>';
-				                                            html += '</h3>';
-				                                        html += '</div>';
-				                                    html += '</div>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-a6937f4 elementor-widget elementor-widget-heading" data-id="a6937f4" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<style>.elementor-heading-title {padding: 0;margin: 0;line-height: 1;}.elementor-widget-heading .elementor-heading-title[class*="elementor-size-"] > a {color: inherit;font-size: inherit;line-height: inherit;}.elementor-widget-heading .elementor-heading-title.elementor-size-small {font-size: 15px;}.elementor-widget-heading .elementor-heading-title.elementor-size-medium {font-size: 19px;}.elementor-widget-heading .elementor-heading-title.elementor-size-large {font-size: 29px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xl {font-size: 39px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl {font-size: 59px;}</style>';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].checkin+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-056e108" data-id="056e108" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-ab0e110 elementor-widget elementor-widget-heading" data-id="ab0e110" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroDeparture+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-891ac14 elementor-widget elementor-widget-heading" data-id="891ac14" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroDescDeparture+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-95bdfa3" data-id="95bdfa3" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-a06688c elementor-widget elementor-widget-heading" data-id="a06688c" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroArrival+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-6767e1e elementor-widget elementor-widget-heading" data-id="6767e1e" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroDescArrival+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-94783ca elementor-hidden-mobile" data-id="94783ca" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-5ae3cb0 elementor-widget elementor-widget-heading" data-id="5ae3cb0" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">Bagagem</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                html += '</div>';
-				            html += '</section>';
+					    	/* FIM TERCEIRA ROTA */
+					    }
 
-				            jQuery(item.flightsT4).each(function(v4, voo4) { 
-				            	html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-3eab11e elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="3eab11e" data-element_type="section" >';
+				    	if(localStorage.getItem("DESTINO_FLIGHT_TRECHO4") != null){
+					    	/* QUARTA ROTA */
+					    		html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="bdb8934" data-element_type="section">';
 					                html += '<div class="elementor-container elementor-column-gap-default">';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-121ea31" data-id="121ea31" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-694ffca" data-id="694ffca" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-04fc0e6 elementor-view-default elementor-widget elementor-widget-icon" data-id="04fc0e6" data-element_type="widget" data-widget_type="icon.default">';
+					                            html += '<div class="elementor-element elementor-element-487a01e elementor-position-left elementor-view-default elementor-mobile-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="487a01e" data-element_type="widget" data-widget_type="icon-box.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<div class="elementor-icon-wrapper">';
-					                                        html += '<div class="elementor-icon">';  
-				                                            	html += '<input type="radio" name="flightTrecho4" id="flightTrecho4" value="'+voo4.id+'" onclick="setDataFlight('+i+', '+v4+', \'flightsT4\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+					                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css" />';
+					                                    html += '<div class="elementor-icon-box-wrapper">';
+					                                        html += '<div class="elementor-icon-box-icon">';
+					                                            html += '<span class="elementor-icon elementor-animation-"> <i aria-hidden="true" class="'+item.flightsT4[0].iconType+'"></i> </span>';
+					                                        html += '</div>';
+					                                        html += '<div class="elementor-icon-box-content">';
+					                                            html += '<h3 class="elementor-icon-box-title" style="    margin-top: 5px;">';
+					                                                html += '<span> '+item.flightsT4[0].textType+' </span>';
+					                                            html += '</h3>';
 					                                        html += '</div>';
 					                                    html += '</div>';
 					                                html += '</div>';
 					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-145eadd" data-id="145eadd" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-f1d001a elementor-position-left elementor-vertical-align-top elementor-widget elementor-widget-image-box" data-id="f1d001a" data-element_type="widget" data-widget_type="image-box.default" >';
+					                            html += '<div class="elementor-element elementor-element-a6937f4 elementor-widget elementor-widget-heading" data-id="a6937f4" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<style> .elementor-widget-image-box .elementor-image-box-content {width: 100%;}@media (min-width: 768px) {.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper, .elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {display: flex;}.elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {text-align: right;flex-direction: row-reverse;}.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper {text-align: left;flex-direction: row;}.elementor-widget-image-box.elementor-position-top .elementor-image-box-img {margin: auto;}.elementor-widget-image-box.elementor-vertical-align-top .elementor-image-box-wrapper {align-items: flex-start;}.elementor-widget-image-box.elementor-vertical-align-middle .elementor-image-box-wrapper {align-items: center;}.elementor-widget-image-box.elementor-vertical-align-bottom .elementor-image-box-wrapper {align-items: flex-end;}}@media (max-width: 767px) {.elementor-widget-image-box .elementor-image-box-img {margin-left: auto !important;margin-right: auto !important;margin-bottom: 15px;}}.elementor-widget-image-box .elementor-image-box-img {display: inline-block;}.elementor-widget-image-box .elementor-image-box-title a {color: inherit;}.elementor-widget-image-box .elementor-image-box-wrapper {text-align: center;}.elementor-widget-image-box .elementor-image-box-description {margin: 0;}</style>';
-					                                    html += '<div class="elementor-image-box-wrapper">';
-					                                        html += '<figure class="elementor-image-box-img">';
-					                                            html += '<img decoding="async" width="25" height="25" src="'+voo4.logoCompanhia+'" class="attachment-full size-full wp-image-1784" alt="" loading="lazy" />';
-					                                        html += '</figure>';
-					                                        html += '<div class="elementor-image-box-content"><h3 class="elementor-image-box-title">'+voo4.companhia+'</h3></div>';
-					                                    html += '</div>';
+					                                    html += '<style>.elementor-heading-title {padding: 0;margin: 0;line-height: 1;}.elementor-widget-heading .elementor-heading-title[class*="elementor-size-"] > a {color: inherit;font-size: inherit;line-height: inherit;}.elementor-widget-heading .elementor-heading-title.elementor-size-small {font-size: 15px;}.elementor-widget-heading .elementor-heading-title.elementor-size-medium {font-size: 19px;}.elementor-widget-heading .elementor-heading-title.elementor-size-large {font-size: 29px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xl {font-size: 39px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl {font-size: 59px;}</style>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].checkin+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-f7a6913" data-id="f7a6913" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-056e108" data-id="056e108" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-d1a8a7a elementor-widget elementor-widget-heading" data-id="d1a8a7a" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-ab0e110 elementor-widget elementor-widget-heading" data-id="ab0e110" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.horaIda+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroDeparture+'</h2>';
+					                                html += '</div>';
+					                            html += '</div>';
+					                            html += '<div class="elementor-element elementor-element-891ac14 elementor-widget elementor-widget-heading" data-id="891ac14" data-element_type="widget" data-widget_type="heading.default">';
+					                                html += '<div class="elementor-widget-container">';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroDescDeparture+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-0f05fdb" data-id="0f05fdb" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-95bdfa3" data-id="95bdfa3" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-98d3060 elementor-widget elementor-widget-heading" data-id="98d3060" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-a06688c elementor-widget elementor-widget-heading" data-id="a06688c" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.paradas+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroArrival+'</h2>';
 					                                html += '</div>';
-					                            html += '</div>'; 
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-acb4588" data-id="acb4588" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-50bc46f elementor-widget elementor-widget-heading" data-id="50bc46f" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '</div>';
+					                            html += '<div class="elementor-element elementor-element-6767e1e elementor-widget elementor-widget-heading" data-id="6767e1e" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.horaVolta+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT4[0].aeroDescArrival+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-9a72b81" data-id="9a72b81" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-94783ca elementor-hidden-mobile" data-id="94783ca" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-087e430 elementor-widget elementor-widget-heading" data-id="087e430" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-5ae3cb0 elementor-widget elementor-widget-heading" data-id="5ae3cb0" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.duracao+'</h2>';
-					                                html += '</div>';
-					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-2d9f7a6" data-id="2d9f7a6" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-e64596c elementor-icon-list--layout-inline elementor-align-center elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="e64596c" data-element_type="widget"  data-widget_type="icon-list.default" >';
-					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css" />';
-					                                    html += '<ul class="elementor-icon-list-items elementor-inline-items">';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-shopping-bag"></i> </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-suitcase-rolling"></i> </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> '+voo4.bagagem+' </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                    html += '</ul>';
-					                                html += '</div>';
-					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-ba41d76" data-id="ba41d76" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-83e1053 elementor-view-default elementor-widget elementor-widget-icon" data-id="83e1053" data-element_type="widget" data-widget_type="icon.default">';
-					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<div class="elementor-icon-wrapper">';
-					                                        html += '<div class="elementor-icon">';
-					                                            html += '<i aria-hidden="true" class="fas fa-chevron-down" onclick="getDataFlight('+i+', '+v4+', \'flightsT4\')" style="cursor:pointer"></i>';
-					                                        html += '</div>';
-					                                    html += '</div>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">Bagagem</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
 					                html += '</div>';
-					            html += '</section> ';
-				            });
+					            html += '</section>';
 
-				    	/* FIM QUARTA ROTA */
-				    }
+					            jQuery(item.flightsT4).each(function(v4, voo4) { 
+					            	html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-3eab11e elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="3eab11e" data-element_type="section" >';
+						                html += '<div class="elementor-container elementor-column-gap-default">';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-121ea31" data-id="121ea31" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-04fc0e6 elementor-view-default elementor-widget elementor-widget-icon" data-id="04fc0e6" data-element_type="widget" data-widget_type="icon.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<div class="elementor-icon-wrapper">';
+						                                        html += '<div class="elementor-icon">';  
+					                                            	html += '<input type="radio" name="flightTrecho4_'+i+'" id="flightTrecho4" value="'+voo4.id+'" onclick="setDataFlight('+i+', '+v4+', \'flightsT4\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+						                                        html += '</div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-145eadd" data-id="145eadd" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-f1d001a elementor-position-left elementor-vertical-align-top elementor-widget elementor-widget-image-box" data-id="f1d001a" data-element_type="widget" data-widget_type="image-box.default" >';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<style> .elementor-widget-image-box .elementor-image-box-content {width: 100%;}@media (min-width: 768px) {.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper, .elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {display: flex;}.elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {text-align: right;flex-direction: row-reverse;}.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper {text-align: left;flex-direction: row;}.elementor-widget-image-box.elementor-position-top .elementor-image-box-img {margin: auto;}.elementor-widget-image-box.elementor-vertical-align-top .elementor-image-box-wrapper {align-items: flex-start;}.elementor-widget-image-box.elementor-vertical-align-middle .elementor-image-box-wrapper {align-items: center;}.elementor-widget-image-box.elementor-vertical-align-bottom .elementor-image-box-wrapper {align-items: flex-end;}}@media (max-width: 767px) {.elementor-widget-image-box .elementor-image-box-img {margin-left: auto !important;margin-right: auto !important;margin-bottom: 15px;}}.elementor-widget-image-box .elementor-image-box-img {display: inline-block;}.elementor-widget-image-box .elementor-image-box-title a {color: inherit;}.elementor-widget-image-box .elementor-image-box-wrapper {text-align: center;}.elementor-widget-image-box .elementor-image-box-description {margin: 0;}</style>';
+						                                    html += '<div class="elementor-image-box-wrapper">';
+						                                        html += '<figure class="elementor-image-box-img">';
+						                                            html += '<img decoding="async" width="25" height="25" src="'+voo4.logoCompanhia+'" class="attachment-full size-full wp-image-1784" alt="" loading="lazy" />';
+						                                        html += '</figure>';
+						                                        html += '<div class="elementor-image-box-content"><h3 class="elementor-image-box-title">'+voo4.companhia+'</h3></div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-f7a6913" data-id="f7a6913" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-d1a8a7a elementor-widget elementor-widget-heading" data-id="d1a8a7a" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.horaIda+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-0f05fdb" data-id="0f05fdb" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-98d3060 elementor-widget elementor-widget-heading" data-id="98d3060" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.paradas+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>'; 
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-acb4588" data-id="acb4588" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-50bc46f elementor-widget elementor-widget-heading" data-id="50bc46f" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.horaVolta+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-9a72b81" data-id="9a72b81" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-087e430 elementor-widget elementor-widget-heading" data-id="087e430" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo4.duracao+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-2d9f7a6" data-id="2d9f7a6" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-e64596c elementor-icon-list--layout-inline elementor-align-center elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="e64596c" data-element_type="widget"  data-widget_type="icon-list.default" >';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css" />';
+						                                    html += '<ul class="elementor-icon-list-items elementor-inline-items">';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-shopping-bag"></i> </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-suitcase-rolling"></i> </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> '+voo4.bagagem+' </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                    html += '</ul>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-ba41d76" data-id="ba41d76" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-83e1053 elementor-view-default elementor-widget elementor-widget-icon" data-id="83e1053" data-element_type="widget" data-widget_type="icon.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<div class="elementor-icon-wrapper">';
+						                                        html += '<div class="elementor-icon">';
+						                                            html += '<i aria-hidden="true" class="fas fa-chevron-down" onclick="getDataFlight('+i+', '+v4+', \'flightsT4\')" style="cursor:pointer"></i>';
+						                                        html += '</div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                html += '</div>';
+						            html += '</section> ';
+					            });
 
-			    	if(localStorage.getItem("DESTINO_FLIGHT_TRECHO5") != null){
-				    	/* QUINTA ROTA */
-				    		html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="bdb8934" data-element_type="section">';
-				                html += '<div class="elementor-container elementor-column-gap-default">';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-694ffca" data-id="694ffca" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-487a01e elementor-position-left elementor-view-default elementor-mobile-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="487a01e" data-element_type="widget" data-widget_type="icon-box.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css" />';
-				                                    html += '<div class="elementor-icon-box-wrapper">';
-				                                        html += '<div class="elementor-icon-box-icon">';
-				                                            html += '<span class="elementor-icon elementor-animation-"> <i aria-hidden="true" class="'+item.flightsT5[0].iconType+'"></i> </span>';
-				                                        html += '</div>';
-				                                        html += '<div class="elementor-icon-box-content">';
-				                                            html += '<h3 class="elementor-icon-box-title" style="    margin-top: 5px;">';
-				                                                html += '<span> '+item.flightsT5[0].textType+' </span>';
-				                                            html += '</h3>';
-				                                        html += '</div>';
-				                                    html += '</div>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-a6937f4 elementor-widget elementor-widget-heading" data-id="a6937f4" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<style>.elementor-heading-title {padding: 0;margin: 0;line-height: 1;}.elementor-widget-heading .elementor-heading-title[class*="elementor-size-"] > a {color: inherit;font-size: inherit;line-height: inherit;}.elementor-widget-heading .elementor-heading-title.elementor-size-small {font-size: 15px;}.elementor-widget-heading .elementor-heading-title.elementor-size-medium {font-size: 19px;}.elementor-widget-heading .elementor-heading-title.elementor-size-large {font-size: 29px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xl {font-size: 39px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl {font-size: 59px;}</style>';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].checkin+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-056e108" data-id="056e108" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-ab0e110 elementor-widget elementor-widget-heading" data-id="ab0e110" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroDeparture+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-891ac14 elementor-widget elementor-widget-heading" data-id="891ac14" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroDescDeparture+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-95bdfa3" data-id="95bdfa3" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-a06688c elementor-widget elementor-widget-heading" data-id="a06688c" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroArrival+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                            html += '<div class="elementor-element elementor-element-6767e1e elementor-widget elementor-widget-heading" data-id="6767e1e" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroDescArrival+'</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-94783ca elementor-hidden-mobile" data-id="94783ca" data-element_type="column">';
-				                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-				                            html += '<div class="elementor-element elementor-element-5ae3cb0 elementor-widget elementor-widget-heading" data-id="5ae3cb0" data-element_type="widget" data-widget_type="heading.default">';
-				                                html += '<div class="elementor-widget-container">';
-				                                    html += '<h2 class="elementor-heading-title elementor-size-default">Bagagem</h2>';
-				                                html += '</div>';
-				                            html += '</div>';
-				                        html += '</div>';
-				                    html += '</div>';
-				                html += '</div>';
-				            html += '</section>';
+					    	/* FIM QUARTA ROTA */
+					    }
 
-				            jQuery(item.flightsT5).each(function(v5, voo5) { 
-				            	html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-3eab11e elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="3eab11e" data-element_type="section" >';
+				    	if(localStorage.getItem("DESTINO_FLIGHT_TRECHO5") != null){
+					    	/* QUINTA ROTA */
+					    		html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-bdb8934 elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="bdb8934" data-element_type="section">';
 					                html += '<div class="elementor-container elementor-column-gap-default">';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-121ea31" data-id="121ea31" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-694ffca" data-id="694ffca" data-element_type="column" data-settings=\'{"background_background":"classic"}\'>';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-04fc0e6 elementor-view-default elementor-widget elementor-widget-icon" data-id="04fc0e6" data-element_type="widget" data-widget_type="icon.default">';
+					                            html += '<div class="elementor-element elementor-element-487a01e elementor-position-left elementor-view-default elementor-mobile-position-top elementor-vertical-align-top elementor-widget elementor-widget-icon-box" data-id="487a01e" data-element_type="widget" data-widget_type="icon-box.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<div class="elementor-icon-wrapper">';
-					                                        html += '<div class="elementor-icon">'; 
-				                                            	html += '<input type="radio" name="flightTrecho5" id="flightTrecho5" value="'+voo5.id+'" onclick="setDataFlight('+i+', '+v5+', \'flightsT5\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+					                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-box.min.css" />';
+					                                    html += '<div class="elementor-icon-box-wrapper">';
+					                                        html += '<div class="elementor-icon-box-icon">';
+					                                            html += '<span class="elementor-icon elementor-animation-"> <i aria-hidden="true" class="'+item.flightsT5[0].iconType+'"></i> </span>';
+					                                        html += '</div>';
+					                                        html += '<div class="elementor-icon-box-content">';
+					                                            html += '<h3 class="elementor-icon-box-title" style="    margin-top: 5px;">';
+					                                                html += '<span> '+item.flightsT5[0].textType+' </span>';
+					                                            html += '</h3>';
 					                                        html += '</div>';
 					                                    html += '</div>';
 					                                html += '</div>';
 					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-145eadd" data-id="145eadd" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-f1d001a elementor-position-left elementor-vertical-align-top elementor-widget elementor-widget-image-box" data-id="f1d001a" data-element_type="widget" data-widget_type="image-box.default" >';
+					                            html += '<div class="elementor-element elementor-element-a6937f4 elementor-widget elementor-widget-heading" data-id="a6937f4" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<style> .elementor-widget-image-box .elementor-image-box-content {width: 100%;}@media (min-width: 768px) {.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper, .elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {display: flex;}.elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {text-align: right;flex-direction: row-reverse;}.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper {text-align: left;flex-direction: row;}.elementor-widget-image-box.elementor-position-top .elementor-image-box-img {margin: auto;}.elementor-widget-image-box.elementor-vertical-align-top .elementor-image-box-wrapper {align-items: flex-start;}.elementor-widget-image-box.elementor-vertical-align-middle .elementor-image-box-wrapper {align-items: center;}.elementor-widget-image-box.elementor-vertical-align-bottom .elementor-image-box-wrapper {align-items: flex-end;}}@media (max-width: 767px) {.elementor-widget-image-box .elementor-image-box-img {margin-left: auto !important;margin-right: auto !important;margin-bottom: 15px;}}.elementor-widget-image-box .elementor-image-box-img {display: inline-block;}.elementor-widget-image-box .elementor-image-box-title a {color: inherit;}.elementor-widget-image-box .elementor-image-box-wrapper {text-align: center;}.elementor-widget-image-box .elementor-image-box-description {margin: 0;}</style>';
-					                                    html += '<div class="elementor-image-box-wrapper">';
-					                                        html += '<figure class="elementor-image-box-img">';
-					                                            html += '<img decoding="async" width="25" height="25" src="'+voo5.logoCompanhia+'" class="attachment-full size-full wp-image-1784" alt="" loading="lazy" />';
-					                                        html += '</figure>';
-					                                        html += '<div class="elementor-image-box-content"><h3 class="elementor-image-box-title">'+voo5.companhia+'</h3></div>';
-					                                    html += '</div>';
+					                                    html += '<style>.elementor-heading-title {padding: 0;margin: 0;line-height: 1;}.elementor-widget-heading .elementor-heading-title[class*="elementor-size-"] > a {color: inherit;font-size: inherit;line-height: inherit;}.elementor-widget-heading .elementor-heading-title.elementor-size-small {font-size: 15px;}.elementor-widget-heading .elementor-heading-title.elementor-size-medium {font-size: 19px;}.elementor-widget-heading .elementor-heading-title.elementor-size-large {font-size: 29px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xl {font-size: 39px;}.elementor-widget-heading .elementor-heading-title.elementor-size-xxl {font-size: 59px;}</style>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].checkin+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-f7a6913" data-id="f7a6913" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-056e108" data-id="056e108" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-d1a8a7a elementor-widget elementor-widget-heading" data-id="d1a8a7a" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-ab0e110 elementor-widget elementor-widget-heading" data-id="ab0e110" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.horaIda+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroDeparture+'</h2>';
+					                                html += '</div>';
+					                            html += '</div>';
+					                            html += '<div class="elementor-element elementor-element-891ac14 elementor-widget elementor-widget-heading" data-id="891ac14" data-element_type="widget" data-widget_type="heading.default">';
+					                                html += '<div class="elementor-widget-container">';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroDescDeparture+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-0f05fdb" data-id="0f05fdb" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-95bdfa3" data-id="95bdfa3" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-98d3060 elementor-widget elementor-widget-heading" data-id="98d3060" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-a06688c elementor-widget elementor-widget-heading" data-id="a06688c" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.paradas+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroArrival+'</h2>';
 					                                html += '</div>';
-					                            html += '</div>'; 
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-acb4588" data-id="acb4588" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-50bc46f elementor-widget elementor-widget-heading" data-id="50bc46f" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '</div>';
+					                            html += '<div class="elementor-element elementor-element-6767e1e elementor-widget elementor-widget-heading" data-id="6767e1e" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.horaVolta+'</h2>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+item.flightsT5[0].aeroDescArrival+'</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-9a72b81" data-id="9a72b81" data-element_type="column">';
+					                    html += '<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-94783ca elementor-hidden-mobile" data-id="94783ca" data-element_type="column">';
 					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-087e430 elementor-widget elementor-widget-heading" data-id="087e430" data-element_type="widget" data-widget_type="heading.default">';
+					                            html += '<div class="elementor-element elementor-element-5ae3cb0 elementor-widget elementor-widget-heading" data-id="5ae3cb0" data-element_type="widget" data-widget_type="heading.default">';
 					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.duracao+'</h2>';
-					                                html += '</div>';
-					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-2d9f7a6" data-id="2d9f7a6" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-e64596c elementor-icon-list--layout-inline elementor-align-center elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="e64596c" data-element_type="widget"  data-widget_type="icon-list.default" >';
-					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css" />';
-					                                    html += '<ul class="elementor-icon-list-items elementor-inline-items">';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-shopping-bag"></i> </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-suitcase-rolling"></i> </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
-					                                            html += '<span class="elementor-icon-list-icon"> '+voo5.bagagem+' </span>';
-					                                            html += '<span class="elementor-icon-list-text"></span>';
-					                                        html += '</li>';
-					                                    html += '</ul>';
-					                                html += '</div>';
-					                            html += '</div>';
-					                        html += '</div>';
-					                    html += '</div>';
-					                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-ba41d76" data-id="ba41d76" data-element_type="column">';
-					                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
-					                            html += '<div class="elementor-element elementor-element-83e1053 elementor-view-default elementor-widget elementor-widget-icon" data-id="83e1053" data-element_type="widget" data-widget_type="icon.default">';
-					                                html += '<div class="elementor-widget-container">';
-					                                    html += '<div class="elementor-icon-wrapper">';
-					                                        html += '<div class="elementor-icon">';
-					                                            html += '<i aria-hidden="true" class="fas fa-chevron-down" onclick="getDataFlight('+i+', '+v5+', \'flightsT5\')" style="cursor:pointer"></i>';
-					                                        html += '</div>';
-					                                    html += '</div>';
+					                                    html += '<h2 class="elementor-heading-title elementor-size-default">Bagagem</h2>';
 					                                html += '</div>';
 					                            html += '</div>';
 					                        html += '</div>';
 					                    html += '</div>';
 					                html += '</div>';
-					            html += '</section> ';
-				            });
+					            html += '</section>';
 
-				    	/* FIM QUINTA ROTA */
-				    }
+					            jQuery(item.flightsT5).each(function(v5, voo5) { 
+					            	html += '<section class="elementor-section elementor-inner-section elementor-element elementor-element-3eab11e elementor-section-boxed elementor-section-height-default elementor-section-height-default wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no" data-id="3eab11e" data-element_type="section" >';
+						                html += '<div class="elementor-container elementor-column-gap-default">';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-121ea31" data-id="121ea31" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-04fc0e6 elementor-view-default elementor-widget elementor-widget-icon" data-id="04fc0e6" data-element_type="widget" data-widget_type="icon.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<div class="elementor-icon-wrapper">';
+						                                        html += '<div class="elementor-icon">'; 
+					                                            	html += '<input type="radio" name="flightTrecho5_'+i+'" id="flightTrecho5" value="'+voo5.id+'" onclick="setDataFlight('+i+', '+v5+', \'flightsT5\', \''+item.priceWithoutTax+'\', \''+item.totalPriceWithoutTax+'\', \''+item.totalTax+'\', \''+item.totalPrice+'\')" style="cursor:pointer">';
+						                                        html += '</div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-145eadd" data-id="145eadd" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-f1d001a elementor-position-left elementor-vertical-align-top elementor-widget elementor-widget-image-box" data-id="f1d001a" data-element_type="widget" data-widget_type="image-box.default" >';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<style> .elementor-widget-image-box .elementor-image-box-content {width: 100%;}@media (min-width: 768px) {.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper, .elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {display: flex;}.elementor-widget-image-box.elementor-position-right .elementor-image-box-wrapper {text-align: right;flex-direction: row-reverse;}.elementor-widget-image-box.elementor-position-left .elementor-image-box-wrapper {text-align: left;flex-direction: row;}.elementor-widget-image-box.elementor-position-top .elementor-image-box-img {margin: auto;}.elementor-widget-image-box.elementor-vertical-align-top .elementor-image-box-wrapper {align-items: flex-start;}.elementor-widget-image-box.elementor-vertical-align-middle .elementor-image-box-wrapper {align-items: center;}.elementor-widget-image-box.elementor-vertical-align-bottom .elementor-image-box-wrapper {align-items: flex-end;}}@media (max-width: 767px) {.elementor-widget-image-box .elementor-image-box-img {margin-left: auto !important;margin-right: auto !important;margin-bottom: 15px;}}.elementor-widget-image-box .elementor-image-box-img {display: inline-block;}.elementor-widget-image-box .elementor-image-box-title a {color: inherit;}.elementor-widget-image-box .elementor-image-box-wrapper {text-align: center;}.elementor-widget-image-box .elementor-image-box-description {margin: 0;}</style>';
+						                                    html += '<div class="elementor-image-box-wrapper">';
+						                                        html += '<figure class="elementor-image-box-img">';
+						                                            html += '<img decoding="async" width="25" height="25" src="'+voo5.logoCompanhia+'" class="attachment-full size-full wp-image-1784" alt="" loading="lazy" />';
+						                                        html += '</figure>';
+						                                        html += '<div class="elementor-image-box-content"><h3 class="elementor-image-box-title">'+voo5.companhia+'</h3></div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-f7a6913" data-id="f7a6913" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-d1a8a7a elementor-widget elementor-widget-heading" data-id="d1a8a7a" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.horaIda+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-0f05fdb" data-id="0f05fdb" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-98d3060 elementor-widget elementor-widget-heading" data-id="98d3060" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.paradas+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>'; 
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-acb4588" data-id="acb4588" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-50bc46f elementor-widget elementor-widget-heading" data-id="50bc46f" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.horaVolta+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-9a72b81" data-id="9a72b81" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-087e430 elementor-widget elementor-widget-heading" data-id="087e430" data-element_type="widget" data-widget_type="heading.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<h2 class="elementor-heading-title elementor-size-default">'+voo5.duracao+'</h2>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-2d9f7a6" data-id="2d9f7a6" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-e64596c elementor-icon-list--layout-inline elementor-align-center elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="e64596c" data-element_type="widget"  data-widget_type="icon-list.default" >';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<link rel="stylesheet" href="https://rslvportfolio.com.br/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css" />';
+						                                    html += '<ul class="elementor-icon-list-items elementor-inline-items">';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-shopping-bag"></i> </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> <i aria-hidden="true" class="fas fa-suitcase-rolling"></i> </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                        html += '<li class="elementor-icon-list-item elementor-inline-item">';
+						                                            html += '<span class="elementor-icon-list-icon"> '+voo5.bagagem+' </span>';
+						                                            html += '<span class="elementor-icon-list-text"></span>';
+						                                        html += '</li>';
+						                                    html += '</ul>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                    html += '<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-ba41d76" data-id="ba41d76" data-element_type="column">';
+						                        html += '<div class="elementor-widget-wrap elementor-element-populated">';
+						                            html += '<div class="elementor-element elementor-element-83e1053 elementor-view-default elementor-widget elementor-widget-icon" data-id="83e1053" data-element_type="widget" data-widget_type="icon.default">';
+						                                html += '<div class="elementor-widget-container">';
+						                                    html += '<div class="elementor-icon-wrapper">';
+						                                        html += '<div class="elementor-icon">';
+						                                            html += '<i aria-hidden="true" class="fas fa-chevron-down" onclick="getDataFlight('+i+', '+v5+', \'flightsT5\')" style="cursor:pointer"></i>';
+						                                        html += '</div>';
+						                                    html += '</div>';
+						                                html += '</div>';
+						                            html += '</div>';
+						                        html += '</div>';
+						                    html += '</div>';
+						                html += '</div>';
+						            html += '</section> ';
+					            });
+
+					    	/* FIM QUINTA ROTA */
+					    }
+
+					}
 
 			        html += '</div>';
 			    html += '</div>';
@@ -2366,9 +2374,9 @@ function list_results_flights(contador_prox, contador_prev){
 			                            html += '<div class="elementor-element elementor-element-2f478da elementor-align-justify elementor-widget elementor-widget-button" data-id="2f478da" data-element_type="widget" data-widget_type="button.default">';
 			                                html += '<div class="elementor-widget-container">';
 			                                    html += '<div class="elementor-button-wrapper">';
-			                                        html += '<a href="/order-flights/" class="elementor-button-link elementor-button elementor-size-sm" role="button">';
+			                                        html += '<a onclick="order_flights('+i+')" class="elementor-button-link elementor-button elementor-size-sm" role="button" style="color:#fff">';
 			                                            html += '<span class="elementor-button-content-wrapper">';
-			                                                html += '<span class="elementor-button-text">Comprar</span>';
+			                                                html += '<span class="elementor-button-text">'+(jQuery("#type_reserva_flights").val() == 2 ? 'Reservar' : 'Solicitar')+'</span>';
 			                                            html += '</span>';
 			                                        html += '</a>';
 			                                    html += '</div>';
@@ -2442,6 +2450,66 @@ function list_results_flights(contador_prox, contador_prev){
 
 	jQuery(".resultsFlights").html(html); 
 
+	localStorage.removeItem("SELECTED_FLIGHT_TRECHO1");
+	localStorage.removeItem("SELECTED_FLIGHT_TRECHO2");
+	localStorage.removeItem("SELECTED_FLIGHT_TRECHO3");
+	localStorage.removeItem("SELECTED_FLIGHT_TRECHO4");
+	localStorage.removeItem("SELECTED_FLIGHT_TRECHO5");
+	localStorage.removeItem("PRICE_WITHOUT_TAX");
+	localStorage.removeItem("TOTAL_PRICE_WITHOUT_TAX");
+	localStorage.removeItem("TOTAL_TAX");
+	localStorage.removeItem("TOTAL_PRICE");
+	localStorage.removeItem("DESC_PAX");
+
+}
+
+function order_flights(i){
+	console.log(i);
+	console.log(jQuery("input[name=flightTrecho1_"+i+"]").is(':checked'));
+
+	if(jQuery("input[name=flightTrecho1_"+i+"]").is(':checked') == false){
+		swal({ 
+            title: "É necessário selecionar um vôo da mesma tarifa para a compra.", 
+            icon: "warning", 
+        });  
+        return false;
+	}else if(localStorage.getItem("TYPE_FLIGHT") == 1 && jQuery("input[name=flightTrecho2_"+i+"]").is(':checked') == false){
+		swal({ 
+            title: "É necessário selecionar um vôo da mesma tarifa para a compra.", 
+            icon: "warning", 
+        });  
+        return false;
+	}else if(localStorage.getItem("TYPE_FLIGHT") == 3){
+		if(localStorage.getItem("DATE_CHECKIN_TRECHO3") !== null){
+			if(jQuery("input[name=flightTrecho3_"+i+"]").is(':checked') == false){
+				swal({ 
+		            title: "É necessário selecionar um vôo da mesma tarifa para a compra.", 
+		            icon: "warning", 
+		        });  
+		        return false;
+		    }
+		}
+		if(localStorage.getItem("DATE_CHECKIN_TRECHO4") !== null){
+			if(jQuery("input[name=flightTrecho4_"+i+"]").is(':checked') == false){
+				swal({ 
+		            title: "É necessário selecionar um vôo da mesma tarifa para a compra.", 
+		            icon: "warning", 
+		        });  
+		        return false;
+		    }
+		}
+		if(localStorage.getItem("DATE_CHECKIN_TRECHO5") !== null){
+			if(jQuery("input[name=flightTrecho5_"+i+"]").is(':checked') == false){
+				swal({ 
+		            title: "É necessário selecionar um vôo da mesma tarifa para a compra.", 
+		            icon: "warning", 
+		        });  
+		        return false;
+		    }
+		}
+	}else{
+		window.location.href = "/order-flights/";
+	}
 }
 
 function show_page_flights(page){
