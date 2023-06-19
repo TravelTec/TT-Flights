@@ -14,7 +14,7 @@ GitHub Plugin URI: https://github.com/TravelTec/bookinghotels
 
 Description:  O Plugin Travel Tec - Vôos é um plugin desenvolvido para agências e operadoras de turismo que precisam tratar reserva de passagens aéreas de fornecedores, com integração ao fornecedor Rextur.
 
-Version: 1.0.4
+Version: 1.0.5
 
 Author: Travel Tec
 
@@ -5781,6 +5781,7 @@ if(empty($check_page_exist)) {
 	  				<p style="font-size:17px;line-height: 1.8"> O Plugin <strong>Travel Tec - Vôos</strong> é um plugin desenvolvido para agências e operadoras de turismo que precisam tratar reserva de passagens aéreas de fornecedores, com integração ao fornecedor Rextur. </p>
 
 	  				<p style="font-size:17px;line-height: 1.8">Use o shortcode <span class="text-line">[TTBOOKING_MOTOR_RESERVA_FLIGHTS]</span>  <button onclick="copy('[TTBOOKING_MOTOR_RESERVA_FLIGHTS]','#copy_button_1')" id="copy_button_1" class="btn btn-sm btn-primary copy-button" data-toggle="tolltip" data-placement="top" tilte="Copiar shortcode">Copiar</button> para adicionar o motor de reserva em qualquer página.</p>
+					<p style="font-size:17px;line-height: 1.8">Use o shortcode <span class="text-line">[TTBOOKING_ALL_SERVICES]</span>  <button onclick="copy('[TTBOOKING_ALL_SERVICES]','#copy_button_2')" id="copy_button_2" class="btn btn-sm btn-primary copy-button" data-toggle="tolltip" data-placement="top" tilte="Copiar shortcode">Copiar</button> para adicionar o motor de reserva em qualquer página.</p>
 
 	  			</div>
 	  			<div class="tab-pane fade" id="profileFlights" role="tabpanel" aria-labelledby="profileFlights-tab">
@@ -5927,12 +5928,12 @@ if(empty($check_page_exist)) {
 			});
 
 			function copy(text, target) {
-				navigator.clipboard.writeText('[TTBOOKING_MOTOR_RESERVA_FLIGHTS]');
+				navigator.clipboard.writeText(text);
 
-				jQuery("#copy_button_1").attr('title', 'Copiado!').tooltip('_fixTitle').tooltip('show');
+				jQuery(target).attr('title', 'Copiado!').tooltip('_fixTitle').tooltip('show');
 
 				setTimeout(function() {
-					jQuery("#copy_button_1").attr('title', 'Copiar shortcode').tooltip('_fixTitle').tooltip('show');
+					jQuery(target).attr('title', 'Copiar shortcode').tooltip('_fixTitle').tooltip('show');
 				}, 800);
 			}
 		</script>
