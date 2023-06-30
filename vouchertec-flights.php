@@ -14,7 +14,7 @@ GitHub Plugin URI: https://github.com/TravelTec/bookinghotels
 
 Description:  O Plugin Travel Tec - Vôos é um plugin desenvolvido para agências e operadoras de turismo que precisam tratar reserva de passagens aéreas de fornecedores, com integração ao fornecedor Rextur.
 
-Version: 1.1.0
+Version: 1.1.1
 
 Author: Travel Tec
 
@@ -6193,7 +6193,7 @@ if(empty($check_page_exist)) {
 		function flights_plugin_has_parents() {
 			if (is_admin() && current_user_can('activate_plugins') && !is_plugin_active('TT-Helpers-1.0.0/helpers.php')){
 
-			    add_action( 'admin_notices', 'cars_plugin_notice' );
+			    add_action( 'admin_notices', 'flights_plugin_notice' );
 
 			    deactivate_plugins( plugin_basename( __FILE__) );
 			    if ( isset( $_GET['activate'] ) ) {
