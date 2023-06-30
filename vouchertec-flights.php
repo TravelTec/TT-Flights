@@ -14,7 +14,7 @@ GitHub Plugin URI: https://github.com/TravelTec/bookinghotels
 
 Description:  O Plugin Travel Tec - Vôos é um plugin desenvolvido para agências e operadoras de turismo que precisam tratar reserva de passagens aéreas de fornecedores, com integração ao fornecedor Rextur.
 
-Version: 1.1.1
+Version: 1.1.2
 
 Author: Travel Tec
 
@@ -5955,10 +5955,10 @@ if(empty($check_page_exist)) {
 
 	  				<p style="font-size:17px;line-height: 1.8">Use o shortcode <span class="text-line">[TTBOOKING_MOTOR_RESERVA_FLIGHTS]</span>  <button onclick="copy('[TTBOOKING_MOTOR_RESERVA_FLIGHTS]','#copy_button_1')" id="copy_button_1" class="btn btn-sm btn-primary copy-button" data-toggle="tolltip" data-placement="top" tilte="Copiar shortcode">Copiar</button> para adicionar o motor de reserva em qualquer página.</p>
 
-                    <?php if ( shortcode_exists( 'TTBOOKING_MOTOR_RESERVA_FLIGHTS' ) && shortcode_exists( 'TTBOOKING_MOTOR_RESERVA' ) ){ ?>
+                    <?php if ( (shortcode_exists( 'TTBOOKING_MOTOR_RESERVA_FLIGHTS' ) && shortcode_exists( 'TTBOOKING_MOTOR_RESERVA' ) ) || (shortcode_exists( 'TTBOOKING_MOTOR_RESERVA_FLIGHTS' ) && shortcode_exists( 'TTBOOKING_MOTOR_RESERVA_CARS' ) ) ){ ?>
 
  
-                        <p style="font-size:17px;line-height: 1.8">Use o shortcode <span class="text-line">[TTBOOKING_ALL_SERVICES]</span>  <button onclick="copy('[TTBOOKING_ALL_SERVICES]','#copy_button_1')" id="copy_button_2" class="btn btn-sm btn-primary copy-button" data-toggle="tolltip" data-placement="top" tilte="Copiar shortcode">Copiar</button> para adicionar o motor de reserva com todos os serviços em qualquer página.</p>
+                        <p style="font-size:17px;line-height: 1.8">Use o shortcode <span class="text-line">[TTBOOKING_MOTOR_SERVICES]</span>  <button onclick="copy('[TTBOOKING_MOTOR_SERVICES]','#copy_button_1')" id="copy_button_2" class="btn btn-sm btn-primary copy-button" data-toggle="tolltip" data-placement="top" tilte="Copiar shortcode">Copiar</button> para adicionar o motor de reserva com todos os serviços em qualquer página.</p>
                     <?php } ?>
 
 	  			</div>
