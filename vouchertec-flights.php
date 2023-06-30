@@ -6182,3 +6182,28 @@ if(empty($check_page_exist)) {
 
 		update_option('type_reserva_flights', $type_reserva);
     }
+
+/* ***************************************** */
+		/* FUNÇÃO PARA O MOTOR COM TODOS OS SERVIÇOS */
+		/* VERIFICA SE O PLUGIN GERAL DE SHORTCODE ESTÁ ATIVO */
+		/* SE NÃO, PEDE PRA INSTALAR */
+		/* SE SIM, PROSSEGUE */
+		/* Plugin criado para evitar duplicação de código e gerenciar o motor com todos os serviços em um só lugar */
+		add_action( 'admin_init', 'flights_plugin_has_parents' );
+		function flights_plugin_has_parents() {
+			if (is_admin() && current_user_can('activate_plugins') && !is_plugin_active('TT-Helpers-1.0.0/helpers.php')){
+
+			    add_action( 'admin_notices', 'cars_plugin_notice' );
+
+			    deactivate_plugins( plugin_basename( __FILE__) );
+			    if ( isset( $_GET['activate'] ) ) {
+			      	unset( $_GET['activate'] );
+			    }
+			}
+		}
+		function flights_plugin_notice() { ?>
+			<div class="error">
+				<p>O plugin <strong>Vouchertec - Vôos</strong> precisa que o plugin <strong>Vouchertec - Shortcode</strong> esteja instalado e ativo para funcionar corretamente. Você pode fazer o download através <a href="https://github.com/TravelTec/TT-Helpers/archive/refs/tags/1.0.0.zip" target="_blank">deste link</a>. </p>
+			</div>
+		<?php }
+		/* ***************************************** */
